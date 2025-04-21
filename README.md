@@ -1,6 +1,6 @@
 # 🎬 Cinetech – Sistema Web de Cinema
 
-**Cinetech** é um sistema web para gestão de um cinema moderno, permitindo o controle completo de filmes, sessões, assentos, ingressos, avaliações, fidelidade e reservas para eventos. Este projeto é construído com **Spring Boot, JPA, MySQL** no backend e **React + Vite** no frontend.
+**Cinetech** é um sistema web para gestão de um cinema moderno, permitindo o controle completo de filmes, sessões, assentos, ingressos, avaliações, fidelidade e reservas para eventos. Este projeto é construído com **Spring Boot, JPA, MySQL** no backend e **React** no frontend.
 
 ---
 
