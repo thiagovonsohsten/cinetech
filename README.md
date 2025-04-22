@@ -45,21 +45,4 @@ Nesta entrega, implementamos as seguintes funcionalidades de dificuldade média/
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
 
-### Backend
-- Java 21
-- Spring Boot
-- Spring Data JPA
-- MySQL
-- Arquitetura em camadas (Controller, Service, Repository, Domain)
-- Tarefas automáticas com `@Scheduled`
-
-### Frontend
-- React
-- Vite
-- Axios
-- React Router DOM
-- Tailwind CSS
-
----
