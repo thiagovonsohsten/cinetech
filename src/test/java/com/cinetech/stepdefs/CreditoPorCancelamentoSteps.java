@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cinetech.model.Cliente;
-import com.cinetech.model.Credito;
-import com.cinetech.model.Reserva;
-import com.cinetech.model.Sessao;
-import com.cinetech.model.enums.StatusSessao;
+import com.cinetech.domain.model.Cliente;
+import com.cinetech.domain.model.Credito;
+import com.cinetech.domain.model.Reserva;
+import com.cinetech.domain.model.Sessao;
+import com.cinetech.domain.model.StatusSessao;
 
 import io.cucumber.java.pt.*;
 

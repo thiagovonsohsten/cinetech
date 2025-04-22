@@ -1,10 +1,10 @@
 package com.cinetech.stepdefs;
 
-import com.cinetech.model.Assento;
-import com.cinetech.model.Reserva;
-import com.cinetech.model.Sala;
-import com.cinetech.model.Sessao;
-import com.cinetech.model.enums.StatusAssento;
+import com.cinetech.domain.model.Assento;
+import com.cinetech.domain.model.Reserva;
+import com.cinetech.domain.model.Sala;
+import com.cinetech.domain.model.Sessao;
+import com.cinetech.domain.model.StatusAssento;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -2,7 +2,7 @@ package com.cinetech.stepdefs;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.cinetech.model.Filme;
+import com.cinetech.domain.model.Filme;
 
 import io.cucumber.java.pt.*;
 
