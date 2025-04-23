@@ -28,14 +28,14 @@ Nesta entrega, implementamos as seguintes funcionalidades de dificuldade média/
 > Modelo(s) do(s) subdomínio(s) desenvolvido com o Context
 Mapper (arquivo CML)
 
-📄 [Diagramas UML gerados pela ferramenta](https://docs.google.com/document/d/1ljjS3MdCNJ1ICzl2iHkGtTbbmUeqh5sGUR-j-Z_dQPY/edit?usp=sharing)
+📄 [Diagramas UML gerados pela ferramenta](https://drive.google.com/drive/folders/1UUFX-MXj5uJZiZsWHHebn5MnIQWp-EC4?usp=sharing)
 
 ---
 
 ### ✅ Mapa de Histórias do Usuário
 > Estrutura visual e textual das jornadas dos usuários do sistema com foco em suas experiências e funcionalidades.
 
-📄 [Mapa de Histórias do Usuário (PDF/PNG)](https://drive.google.com/drive/folders/1UUFX-MXj5uJZiZsWHHebn5MnIQWp-EC4?usp=sharing)
+📄 [Mapa de Histórias do Usuário (PDF/PNG)](https://drive.google.com/drive/folders/1jvSpfGGg1DuddcfuCANlJetDbwfmFGyl?usp=sharing)
 
 ---
 
