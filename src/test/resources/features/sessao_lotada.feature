@@ -1,8 +1,6 @@
 Feature: Sessão Lotada
 
-  Como cliente
-  Quero que o sistema impeça reservas em sessões sem assentos disponíveis
-  Para garantir que sessões lotadas não sejam reservadas indevidamente
+  
 
   Scenario: Marcar sessão como lotada quando todos os assentos estiverem ocupados
     Given uma sessão com todos os assentos ocupados
