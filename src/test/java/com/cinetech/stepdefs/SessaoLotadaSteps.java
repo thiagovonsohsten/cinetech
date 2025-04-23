@@ -1,9 +1,11 @@
 package com.cinetech.stepdefs;
 
-import com.cinetech.model.*;
-import com.cinetech.model.enums.*;
+import com.cinetech.domain.model.*;
+import com.cinetech.infrastructure.repository.FilmeRepository;
+import com.cinetech.infrastructure.repository.SessaoRepository;
+import com.cinetech.domain.model.*;
 import com.cinetech.repository.*;
-import com.cinetech.service.SessaoService;
+import com.cinetech.application.usecase.SessaoService;
 import io.cucumber.java.pt.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
