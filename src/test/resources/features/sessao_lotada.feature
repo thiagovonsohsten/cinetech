@@ -1,4 +1,4 @@
-Feature: Sessão Lotada
+Feature:  Bloqueio em Sessão Lotada
 
   
 
