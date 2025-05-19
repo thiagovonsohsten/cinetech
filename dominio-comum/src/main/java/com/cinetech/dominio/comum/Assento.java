@@ -20,7 +20,7 @@ public class Assento {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusAssento status = StatusAssento.LIVRE;
+    private StatusAssento status = StatusAssento.DISPONIVEL;
 
     @ManyToOne
     @JoinColumn(name = "sala_id", nullable = false)
