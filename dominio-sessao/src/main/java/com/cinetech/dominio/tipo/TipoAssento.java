@@ -1,4 +1,4 @@
-package com.cinetech.domain.model;
+package com.cinetech.dominio.tipo;
 
 public enum TipoAssento {
     COMUM,

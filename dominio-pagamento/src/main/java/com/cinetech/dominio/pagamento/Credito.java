@@ -1,7 +1,7 @@
 package com.cinetech.dominio.pagamento;
 
+import com.cinetech.dominio.comum.Cliente;
 import com.cinetech.dominio.comum.Sessao;
-import com.cinetech.dominio.usuario.Cliente;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
@@ -19,15 +19,15 @@ public class Credito {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    @Column(name = "valor", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "sessao_id", nullable = false)
+    private Sessao sessao;
+
+    @Column(nullable = false)
     private BigDecimal valor;
 
     @Column(name = "data_credito", nullable = false)
     private LocalDateTime dataCredito;
-
-    @ManyToOne
-    @JoinColumn(name = "sessao_id")
-    private Sessao sessao;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

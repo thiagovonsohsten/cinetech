@@ -2,6 +2,7 @@ package com.cinetech.dominio.comum;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -29,4 +30,7 @@ public class Reserva {
 
     @Column(name = "data_expiracao", nullable = false)
     private LocalDateTime dataExpiracao;
+
+    @Column(name = "valor", nullable = false)
+    private BigDecimal valor;
 } 

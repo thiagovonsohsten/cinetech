@@ -5,4 +5,5 @@ com\cinetech\dominio\comum\Cliente.class
 com\cinetech\dominio\comum\Assento.class
 com\cinetech\dominio\comum\StatusSessao.class
 com\cinetech\dominio\comum\StatusAssento.class
+com\cinetech\dominio\comum\repository\SalaRepository.class
 com\cinetech\dominio\comum\Sessao.class

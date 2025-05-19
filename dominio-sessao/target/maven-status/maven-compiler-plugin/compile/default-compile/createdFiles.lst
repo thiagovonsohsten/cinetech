@@ -1,7 +1,3 @@
-com\cinetech\dominio\reserva\Reserva.class
-com\cinetech\dominio\sala\Sala.class
-com\cinetech\dominio\sessao\Sessao.class
-com\cinetech\dominio\sessao\StatusSessao.class
 com\cinetech\dominio\sessao\repository\SessaoRepository.class
-com\cinetech\domain\model\TipoAssento.class
+com\cinetech\dominio\tipo\TipoAssento.class
 com\cinetech\dominio\assento\repository\AssentoRepository.class

@@ -2,9 +2,11 @@ package com.cinetech.aplicacao.sessao;
 
 import com.cinetech.dominio.comum.Assento;
 import com.cinetech.dominio.comum.StatusAssento;
-import com.cinetech.dominio.sessao.Sessao;
-import com.cinetech.dominio.sessao.StatusSessao;
+import com.cinetech.dominio.comum.Sessao;
+import com.cinetech.dominio.comum.StatusSessao;
+import com.cinetech.dominio.comum.Sala;
 import com.cinetech.dominio.sessao.repository.SessaoRepository;
+import com.cinetech.dominio.comum.repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class SessaoService {
     @Autowired
     private SessaoRepository sessaoRepository;
+
+    @Autowired
+    private SalaRepository salaRepository;
 
     @Transactional
     public Sessao criarSessao(Sessao sessao) {
@@ -37,7 +42,10 @@ public class SessaoService {
         Sessao sessao = sessaoRepository.findById(sessaoId)
             .orElseThrow(() -> new RuntimeException("Sessão não encontrada"));
 
-        long assentosLivres = sessao.getAssentos().stream()
+        Sala sala = salaRepository.findById(sessao.getSalaId())
+            .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
+
+        long assentosLivres = sala.getAssentos().stream()
             .filter(assento -> assento.getStatus() == StatusAssento.LIVRE)
             .count();
 

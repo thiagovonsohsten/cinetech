@@ -2,7 +2,9 @@ package com.cinetech.dominio.comum;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -21,6 +23,12 @@ public class Cliente {
     @Column(nullable = false)
     private String cpf;
 
-    @OneToMany(mappedBy = "cliente")
-    private List<Reserva> reservas;
+    @Column(nullable = false)
+    private String senha;
+
+    @Column(name = "data_nascimento", nullable = false)
+    private LocalDate dataNascimento;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Reserva> reservas = new ArrayList<>();
 } 
