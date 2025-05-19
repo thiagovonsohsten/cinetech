@@ -1,0 +1,5 @@
+com\cinetech\aplicacao\sessao\SessaoService.class
+com\cinetech\aplicacao\pagamento\CreditoService.class
+com\cinetech\aplicacao\filme\FilmeService.class
+com\cinetech\aplicacao\assento\AssentoService.class
+com\cinetech\aplicacao\filme\GerenciarFilmeUseCase.class

@@ -1,0 +1,8 @@
+com\cinetech\dominio\comum\Reserva.class
+com\cinetech\dominio\comum\Sala.class
+com\cinetech\dominio\comum\TipoAssento.class
+com\cinetech\dominio\comum\Cliente.class
+com\cinetech\dominio\comum\Assento.class
+com\cinetech\dominio\comum\StatusSessao.class
+com\cinetech\dominio\comum\StatusAssento.class
+com\cinetech\dominio\comum\Sessao.class

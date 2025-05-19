@@ -1,0 +1,7 @@
+com\cinetech\infraestrutura\persistencia\assento\AssentoRepositoryImpl.class
+com\cinetech\infraestrutura\persistencia\filme\FilmeEntity.class
+com\cinetech\infraestrutura\persistencia\pagamento\CreditoRepositoryImpl.class
+com\cinetech\infraestrutura\persistencia\filme\FilmeRepositoryImpl.class
+com\cinetech\infraestrutura\persistencia\filme\FilmeEntity$FilmeEntityBuilder.class
+com\cinetech\infraestrutura\persistencia\sessao\SessaoRepositoryImpl.class
+com\cinetech\infraestrutura\persistencia\filme\FilmeJpaRepository.class

@@ -1,0 +1,3 @@
+com\cinetech\dominio\pagamento\Credito.class
+com\cinetech\dominio\pagamento\StatusCredito.class
+com\cinetech\dominio\pagamento\repository\CreditoRepository.class
