@@ -1,33 +1,27 @@
 Domain Cinetech {
   Subdomain CinemaCore
-    Subdomain Pagamento
-    Subdomain Fidelidade
-    Subdomain PromocaoDesconto
-    Subdomain Avaliacao
-    Subdomain Usuario
-    Subdomain ReservaSala
-
+  Subdomain Pagamento
+  Subdomain Fidelidade
+  Subdomain PromocaoDesconto
+  Subdomain Avaliacao
+  Subdomain Usuario
+  Subdomain ReservaSala
 }
 
 ContextMap {
   contains CinemaCore
   contains Pagamento
+  contains Usuario
   contains Fidelidade
   contains PromocaoDesconto
   contains Avaliacao
-  contains Usuario
   contains ReservaSala
 
   CinemaCore Shared-Kernel Usuario
-
   Pagamento Shared-Kernel Usuario
-
   Fidelidade Shared-Kernel Usuario
-
   PromocaoDesconto Shared-Kernel Usuario
-
   Avaliacao Shared-Kernel Usuario
-
   ReservaSala Shared-Kernel Usuario
 }
 
@@ -41,20 +35,14 @@ BoundedContext CinemaCore implements CinemaCore {
       String sinopse
       String classificacao
     }
-    ValueObject FilmeId {
-      int id
+    Service FilmeService {
+      operations = ["criarFilme()", "listarFilmes()", "atualizarFilme()", "removerFilme()"]
+    }
+    Repository FilmeRepository {
+      operations = ["save(Filme)", "findById(FilmeId)", "findAll()"]
     }
   }
-  Aggregate Sala {
-    Entity Sala {
-      aggregateRoot
-      -SalaId id
-      int capacidade
-    }
-    ValueObject SalaId {
-      int id
-    }
-  }
+
   Aggregate Sessao {
     Entity Sessao {
       aggregateRoot
@@ -64,10 +52,14 @@ BoundedContext CinemaCore implements CinemaCore {
       Date horario
       double preco
     }
-    ValueObject SessaoId {
-      int id
+    Service SessaoService {
+      operations = ["criarSessao()", "buscarPorFilme(FilmeId)", "cancelarSessao()"]
+    }
+    Repository SessaoRepository {
+      operations = ["save(Sessao)", "findByFilmeId(FilmeId)", "findAll()"]
     }
   }
+
   Aggregate Assento {
     Entity Assento {
       aggregateRoot
@@ -75,24 +67,43 @@ BoundedContext CinemaCore implements CinemaCore {
       int numero
       boolean disponivel
     }
-    ValueObject AssentoId {
-      int id
+    Service AssentoService {
+      operations = ["marcarIndisponivel(AssentoId)", "listarAssentosDisponiveis()"]
+    }
+    Repository AssentoRepository {
+      operations = ["save(Assento)", "findById(AssentoId)", "findAllDisponiveis()"]
     }
   }
 }
 
 BoundedContext Pagamento implements Pagamento {
-  Aggregate Ingresso {
-    Entity Ingresso {
+  Aggregate Credito {
+    Entity Credito {
       aggregateRoot
-      -IngressoId id
-      -SessaoId sessao
+      -CreditoId id
       -ClienteId cliente
-      -AssentoId assento
       double valor
+      String status
     }
-    ValueObject IngressoId {
-      int id
+    Service CreditoService {
+      operations = ["adicionarCredito()", "consultarCredito(ClienteId)", "atualizarStatusCredito()"]
+    }
+    Repository CreditoRepository {
+      operations = ["save(Credito)", "findByClienteId(ClienteId)"]
+    }
+  }
+}
+
+BoundedContext Usuario implements Usuario {
+  Aggregate Cliente {
+    Entity Cliente {
+      aggregateRoot
+      -ClienteId id
+      String nome
+      String email
+    }
+    Repository ClienteRepository {
+      operations = ["save(Cliente)", "findById(ClienteId)", "findByEmail(String)"]
     }
   }
 }
@@ -137,24 +148,6 @@ BoundedContext Avaliacao implements Avaliacao {
   }
 }
 
-BoundedContext Usuario implements Usuario {
-  Aggregate Cliente {
-    Entity Cliente {
-      aggregateRoot
-      -ClienteId id
-      String nome
-      -Email enderecoEmail
-
-    }
-    ValueObject ClienteId {
-      int id
-    }
-    ValueObject Email {
-      String endereco
-    }
-  }
-}
-
 BoundedContext ReservaSala implements ReservaSala {
   Aggregate ReservaEvento {
     Entity ReservaEvento {
@@ -169,4 +162,3 @@ BoundedContext ReservaSala implements ReservaSala {
     }
   }
 }
-
