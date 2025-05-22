@@ -1,164 +1,152 @@
-Domain Cinetech {
-  Subdomain CinemaCore
-  Subdomain Pagamento
-  Subdomain Fidelidade
-  Subdomain PromocaoDesconto
-  Subdomain Avaliacao
-  Subdomain Usuario
-  Subdomain ReservaSala
+Domain GerenciamentoCinema {
+    Subdomain GestaoFilmes
+    Subdomain GestaoUsuarios
+    Subdomain GestaoSessoes
+    Subdomain GestaoPagamentos
 }
 
 ContextMap {
-  contains CinemaCore
-  contains Pagamento
-  contains Usuario
-  contains Fidelidade
-  contains PromocaoDesconto
-  contains Avaliacao
-  contains ReservaSala
-
-  CinemaCore Shared-Kernel Usuario
-  Pagamento Shared-Kernel Usuario
-  Fidelidade Shared-Kernel Usuario
-  PromocaoDesconto Shared-Kernel Usuario
-  Avaliacao Shared-Kernel Usuario
-  ReservaSala Shared-Kernel Usuario
+    contains GestaoFilmes
+    contains GestaoUsuarios
+    contains GestaoSessoes
+    contains GestaoPagamentos
+    
+    GestaoFilmes Shared-Kernel GestaoSessoes
+    GestaoUsuarios Shared-Kernel GestaoSessoes
+    GestaoPagamentos Shared-Kernel GestaoSessoes
+    GestaoPagamentos Shared-Kernel GestaoUsuarios
+    
 }
 
-BoundedContext CinemaCore implements CinemaCore {
-  Aggregate Filme {
-    Entity Filme {
-      aggregateRoot
-      -FilmeId id
-      String titulo
-      String genero
-      String sinopse
-      String classificacao
+BoundedContext GestaoFilmes implements GestaoFilmes {
+    Aggregate Filme {
+        Entity Filme {
+            aggregateRoot
+            
+            -FilmeId id
+            String titulo
+            String sinopse
+            int duracaoMinutos
+            String classificacaoIndicativa
+            List<String> generos
+            Date dataLancamento
+            boolean emCartaz
+        }
+        
+        ValueObject FilmeId {
+            String id
+        }
+        
+        Service FilmeService {
+            void adicionarFilme(@Filme filme);
+            void removerFilmeExpirado();
+            List<@Filme> listarFilmesEmCartaz();
+        }
     }
-    Service FilmeService {
-      operations = ["criarFilme()", "listarFilmes()", "atualizarFilme()", "removerFilme()"]
-    }
-    Repository FilmeRepository {
-      operations = ["save(Filme)", "findById(FilmeId)", "findAll()"]
-    }
-  }
-
-  Aggregate Sessao {
-    Entity Sessao {
-      aggregateRoot
-      -SessaoId id
-      -FilmeId filme
-      -SalaId sala
-      Date horario
-      double preco
-    }
-    Service SessaoService {
-      operations = ["criarSessao()", "buscarPorFilme(FilmeId)", "cancelarSessao()"]
-    }
-    Repository SessaoRepository {
-      operations = ["save(Sessao)", "findByFilmeId(FilmeId)", "findAll()"]
-    }
-  }
-
-  Aggregate Assento {
-    Entity Assento {
-      aggregateRoot
-      -AssentoId id
-      int numero
-      boolean disponivel
-    }
-    Service AssentoService {
-      operations = ["marcarIndisponivel(AssentoId)", "listarAssentosDisponiveis()"]
-    }
-    Repository AssentoRepository {
-      operations = ["save(Assento)", "findById(AssentoId)", "findAllDisponiveis()"]
-    }
-  }
 }
 
-BoundedContext Pagamento implements Pagamento {
-  Aggregate Credito {
-    Entity Credito {
-      aggregateRoot
-      -CreditoId id
-      -ClienteId cliente
-      double valor
-      String status
+BoundedContext GestaoSessoes implements GestaoSessoes {
+    Aggregate Sessao {
+        Entity Sessao {
+            aggregateRoot
+            
+            -SessaoId id
+            -FilmeId filme
+            -SalaId sala
+            DateTime horario
+            boolean lotada
+            -List<Assento> assentos
+            
+            def boolean verificarDisponibilidade(@AssentoId assento);
+            def void bloquearSessaoLotada();
+        }
+        
+        Entity Assento {
+            -AssentoId id
+            String fileira
+            int numero
+            boolean ocupado
+        }
+        
+        ValueObject SessaoId {
+            String id
+        }
+        
+        ValueObject AssentoId {
+            String id
+        }
+
+        ValueObject SalaId {
+            String id
+        }
+        
+        DomainEvent SessaoCanceladaEvento {
+            -SessaoId sessaoId
+            DateTime dataCancelamento
+        }
     }
-    Service CreditoService {
-      operations = ["adicionarCredito()", "consultarCredito(ClienteId)", "atualizarStatusCredito()"]
-    }
-    Repository CreditoRepository {
-      operations = ["save(Credito)", "findByClienteId(ClienteId)"]
-    }
-  }
 }
 
-BoundedContext Usuario implements Usuario {
-  Aggregate Cliente {
-    Entity Cliente {
-      aggregateRoot
-      -ClienteId id
-      String nome
-      String email
+BoundedContext GestaoUsuarios implements GestaoUsuarios {
+    Aggregate Usuario {
+        Entity Usuario {
+            aggregateRoot
+            
+            -UsuarioId id
+            String nome
+            String emailEndereco
+            -Creditos creditos
+            -List<Reserva> historico
+        }
+        
+        ValueObject UsuarioId {
+            String id
+        }
+        
+        ValueObject Creditos {
+            double valor
+        }
+        
+        Entity Reserva {
+            -ReservaId id
+            -SessaoId sessao
+            -AssentoId assento
+            DateTime dataReserva
+        }
+
+        ValueObject ReservaId {
+            String id
+        }
     }
-    Repository ClienteRepository {
-      operations = ["save(Cliente)", "findById(ClienteId)", "findByEmail(String)"]
-    }
-  }
 }
 
-BoundedContext Fidelidade implements Fidelidade {
-  Aggregate ClienteFidelidade {
-    Entity ClienteFidelidade {
-      aggregateRoot
-      -ClienteId id
-      int pontos
+BoundedContext GestaoPagamentos implements GestaoPagamentos {
+    Aggregate Pagamento {
+        Entity Pagamento {
+            aggregateRoot
+            
+            -PagamentoId id
+            -UsuarioId usuario
+            -SessaoId sessao
+            double valor
+            -StatusPagamento status
+            DateTime dataPagamento
+        }
+        
+        ValueObject PagamentoId {
+            String id
+        }
+        
+        Service CreditoService {
+            void emitirCredito(@UsuarioId usuario, double valor);
+            void utilizarCredito(@UsuarioId usuario, @PagamentoId pagamento);
+        }
+        
+        enum StatusPagamento {
+            PENDENTE,
+            APROVADO,
+            CANCELADO,
+            REEMBOLSADO
+        }
     }
-  }
-}
-
-BoundedContext PromocaoDesconto implements PromocaoDesconto {
-  Aggregate Promocao {
-    Entity Promocao {
-      aggregateRoot
-      -PromocaoId id
-      String descricao
-      double percentualDesconto
-    }
-    ValueObject PromocaoId {
-      int id
-    }
-  }
-}
-
-BoundedContext Avaliacao implements Avaliacao {
-  Aggregate AvaliacaoFilme {
-    Entity AvaliacaoFilme {
-      aggregateRoot
-      -AvaliacaoId id
-      -FilmeId filme
-      -ClienteId cliente
-      int nota
-      String comentario nullable
-    }
-    ValueObject AvaliacaoId {
-      int id
-    }
-  }
-}
-
-BoundedContext ReservaSala implements ReservaSala {
-  Aggregate ReservaEvento {
-    Entity ReservaEvento {
-      aggregateRoot
-      -ReservaId id
-      -SalaId sala
-      -ClienteId cliente
-      Date data
-    }
-    ValueObject ReservaId {
-      int id
-    }
-  }
 }
