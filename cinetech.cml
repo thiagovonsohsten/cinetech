@@ -31,6 +31,15 @@ BoundedContext GestaoFilmes implements GestaoFilmes {
             List<String> generos
             Date dataLancamento
             boolean emCartaz
+
+            Repository FilmeRepository {
+                @Filme obter(@FilmeId id);
+                List<@Filme> listarTodos();
+                List<@Filme> buscarPorGenero(String genero);
+                List<@Filme> buscarEmCartaz();
+                void salvar(@Filme filme);
+                void remover(@FilmeId id);
+            }
         }
         
         ValueObject FilmeId {
@@ -59,6 +68,15 @@ BoundedContext GestaoSessoes implements GestaoSessoes {
             
             def boolean verificarDisponibilidade(@AssentoId assento);
             def void bloquearSessaoLotada();
+
+            Repository SessaoRepository {
+                @Sessao obter(@SessaoId id);
+                List<@Sessao> buscarPorFilme(@FilmeId filme);
+                List<@Sessao> buscarPorData(Date data);
+                List<@Sessao> buscarSessoesDisponiveis();
+                void salvar(@Sessao sessao);
+                void cancelar(@SessaoId id);
+            }
         }
         
         Entity Assento {
@@ -97,6 +115,14 @@ BoundedContext GestaoUsuarios implements GestaoUsuarios {
             String emailEndereco
             -Creditos creditos
             -List<Reserva> historico
+
+            Repository UsuarioRepository {
+                @Usuario obter(@UsuarioId id);
+                @Usuario buscarPorEmailEndereco(String emailEndereco);
+                List<@Usuario> listarTodos();
+                void salvar(@Usuario usuario);
+                void remover(@UsuarioId id);
+            }
         }
         
         ValueObject UsuarioId {
@@ -131,6 +157,14 @@ BoundedContext GestaoPagamentos implements GestaoPagamentos {
             double valor
             -StatusPagamento status
             DateTime dataPagamento
+
+            Repository PagamentoRepository {
+                @Pagamento obter(@PagamentoId id);
+                List<@Pagamento> buscarPorUsuario(@UsuarioId usuario);
+                List<@Pagamento> buscarPorStatus(@StatusPagamento status);
+                void salvar(@Pagamento pagamento);
+                void atualizarStatus(@PagamentoId id, @StatusPagamento novoStatus);
+            }
         }
         
         ValueObject PagamentoId {
