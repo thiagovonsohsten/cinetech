@@ -1,17 +1,109 @@
 # 🎬 Cinetech – Sistema Web de Cinema
 
-**Cinetech** é um sistema web para gestão de um cinema moderno, permitindo o controle completo de filmes, sessões, assentos, ingressos, avaliações, fidelidade e reservas para eventos. Este projeto é construído com **Spring Boot, JPA, MySQL** no backend e **React** no frontend.
+**Cinetech** é um sistema web para gestão de um cinema moderno, permitindo o controle completo de filmes, sessões, assentos, ingressos, avaliações, fidelidade e reservas para eventos. Este projeto é construído com **Spring Boot 3.3.0, JPA, H2 Database** no backend.
 
 ---
 
-## 📌 Escopo da Primeira Entrega
+## 🛠️ Tecnologias Utilizadas
 
-Nesta entrega, implementamos as seguintes funcionalidades de dificuldade média/difícil com regras de negócio relevantes:
+- Java 17
+- Spring Boot 3.3.0
+- Spring Data JPA
+- Spring Validation
+- H2 Database
+- Lombok
+- Cucumber (para testes BDD)
+- Maven
 
-1. **Seleção de Assento pelo Cliente**
-2. **Bloqueio automático de sessão lotada**
-3. **Remoção automática de filmes após fim de exibição**
-4. **Emissão automática de crédito em caso de sessão cancelada**
+---
+
+## 📌 Funcionalidades Implementadas
+
+1. **Gerenciamento de Filmes**
+   - Cadastro e atualização de filmes
+   - Remoção automática após fim de exibição
+   - Classificação etária para cada filme
+   - Controle de período de exibição
+   - Sistema de avaliação com notas e comentários
+   - Filtro automático de conteúdo ofensivo em comentários
+   - Remoção automática de filmes com avaliação média abaixo de 2.5
+
+2. **Gerenciamento de Sessões**
+   - Criação e controle de sessões
+   - Bloqueio automático de sessão lotada
+   - Emissão automática de crédito em caso de cancelamento
+
+3. **Gerenciamento de Ingressos**
+   - Seleção de assentos
+   - Emissão de ingressos
+   - Controle de disponibilidade
+
+4. **Gerenciamento de Usuários**
+   - Cadastro e autenticação
+   - Sistema de fidelidade
+
+5. **Gerenciamento de Salas**
+   - Configuração de salas
+   - Controle de capacidade
+
+6. **Gerenciamento de Clientes**
+   - Cadastro de clientes
+   - Histórico de compras
+   - Sistema de avaliação de filmes
+   - Restrição de avaliação apenas para filmes assistidos
+
+7. **Gerenciamento de Créditos**
+   - Emissão automática de créditos em caso de cancelamento
+   - Controle de validade dos créditos
+   - Aplicação de créditos em novas compras
+
+8. **Gerenciamento de Promoções**
+   - Cadastro de promoções
+   - Aplicação automática de descontos
+   - Validação de regras de negócio
+
+9. **Gerenciamento de Avaliações**
+   - Sistema de avaliação com notas (1-5) e comentários
+   - Filtro automático de conteúdo ofensivo
+   - Moderação de comentários
+   - Cálculo de média de avaliações por filme
+   - Remoção automática de filmes com avaliação baixa
+
+---
+
+## 🏗️ Arquitetura do Projeto
+
+O projeto segue os princípios de Domain-Driven Design (DDD) com a seguinte estrutura:
+
+```
+src/main/java/com/cinetech/api/
+├── aplicacao/      # Casos de uso e serviços
+├── dominio/        # Entidades e regras de negócio
+├── infraestrutura/ # Implementações técnicas
+└── ApiApplication.java
+```
+
+---
+
+## 🚀 Como Executar
+
+1. Clone o repositório
+2. Certifique-se de ter o Java 17 instalado
+3. Execute o projeto usando Maven:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+4. A aplicação estará disponível em `http://localhost:8080`
+
+---
+
+## 🧪 Testes
+
+O projeto utiliza Cucumber para testes de comportamento (BDD). Para executar os testes:
+
+```bash
+./mvnw test
+```
 
 ---
 
@@ -25,8 +117,7 @@ Nesta entrega, implementamos as seguintes funcionalidades de dificuldade média/
 ---
 
 ### ✅ Context Map Diagram
-> Modelo(s) do(s) subdomínio(s) desenvolvido com o Context
-Mapper (arquivo CML)
+> Modelo(s) do(s) subdomínio(s) desenvolvido com o Context Mapper (arquivo CML)
 
 📄 [Diagramas UML gerados pela ferramenta](https://drive.google.com/drive/folders/1UUFX-MXj5uJZiZsWHHebn5MnIQWp-EC4?usp=sharing)
 
@@ -52,6 +143,8 @@ Mapper (arquivo CML)
 📄 [Cenários BDD - Funcionalidades Implementadas (PDF ou Markdown)](https://docs.google.com/document/d/1NpiIm_egSG-9yo--d5ruzQnb9pZ8-D8GTQ4E4FA0H8g/edit?usp=drivesdk)
 
 ---
+
+## 👥 Equipe
 
 Integrantes: Thiago von Sohsten, Enzo Nunes, Sérgio Gouveia, Thiago Belo, Gustavo Carneiro, Guilherme Alencar, José Jorge, Kauan Novello e Henrique Lobo
 
