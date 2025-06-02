@@ -139,7 +139,6 @@ public class AvaliacaoAplicacao {
 
     @Transactional(readOnly = true)
     public List<Avaliacao> listarAvaliacoesAprovadasPorFilme(FilmeId filmeId) {
-        Objects.requireNonNull(filmeId, "ID do Filme não pode ser nulo.");
         return avaliacaoRepositorio.buscarAvaliacoesAprovadasPorFilmeId(filmeId);
     }
 

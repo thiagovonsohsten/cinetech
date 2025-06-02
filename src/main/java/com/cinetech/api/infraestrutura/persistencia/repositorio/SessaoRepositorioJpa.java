@@ -69,24 +69,17 @@ public class SessaoRepositorioJpa implements SessaoRepositorio {
     @Override
     @Transactional
     public Sessao salvar(Sessao sessaoDominio) {
-        SessaoJpa sessaoJpa = SessaoMapper.toJpaEntity(sessaoDominio); // Chamada estática
-        // Garante o relacionamento bidirecional para JPA antes de salvar
-        if (sessaoJpa.getAssentos() != null) {
-            sessaoJpa.getAssentos().forEach(assentoJpa -> {
-                if (assentoJpa.getSessao() == null) {
-                    assentoJpa.setSessao(sessaoJpa);
-                }
-            });
-        }
-        SessaoJpa sessaoSalvaJpa = jpaRepositoryInternal.save(sessaoJpa);
-        return reconstruirAgregadoSessao(sessaoSalvaJpa);
+        SessaoJpa sessaoJpa = SessaoMapper.toJpaEntity(sessaoDominio);
+        SessaoJpa salvoJpa = jpaRepositoryInternal.save(sessaoJpa);
+        return SessaoMapper.toDomainEntity(salvoJpa);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<Sessao> buscarPorId(SessaoId sessaoIdDominio) {
-        UUID idPrimitivo = SessaoMapper.toPrimitiveId(sessaoIdDominio); // Chamada estática
-        return jpaRepositoryInternal.findById(idPrimitivo).map(SessaoRepositorioJpa::reconstruirAgregadoSessao);
+        UUID idPrimitivo = SessaoMapper.toPrimitiveId(sessaoIdDominio);
+        return jpaRepositoryInternal.findById(idPrimitivo)
+                .map(SessaoMapper::toDomainEntity);
     }
 
     @Override
@@ -157,5 +150,13 @@ public class SessaoRepositorioJpa implements SessaoRepositorio {
     public List<Sessao> buscarPorStatus(StatusSessao status) {
         // Assume que este método existe em SessaoJpaRepository
         return reconstruirListaAgregadosSessao(jpaRepositoryInternal.findByStatus(status));
+    }
+
+    @Override
+    public List<Sessao> buscarPorFilmeId(FilmeId filmeId) {
+        UUID filmeIdPrimitivo = FilmeMapper.toPrimitiveId(filmeId);
+        return jpaRepositoryInternal.findByFilmeId(filmeIdPrimitivo).stream()
+                .map(SessaoMapper::toDomainEntity)
+                .collect(Collectors.toList());
     }
 }

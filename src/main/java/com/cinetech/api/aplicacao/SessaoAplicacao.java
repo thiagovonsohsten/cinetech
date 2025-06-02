@@ -267,4 +267,9 @@ public class SessaoAplicacao {
                         s.getDataHoraInicio().isAfter(LocalDateTime.now())) // Apenas futuras
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public List<Sessao> listarSessoesPorFilme(FilmeId filmeId) {
+        return sessaoRepositorio.buscarPorFilmeId(filmeId);
+    }
 }

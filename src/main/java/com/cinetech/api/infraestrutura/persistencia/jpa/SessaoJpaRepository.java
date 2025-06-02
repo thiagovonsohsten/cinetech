@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime; // Necessário para o método que ficou
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -22,4 +23,8 @@ public interface SessaoJpaRepository extends JpaRepository<SessaoJpa, UUID> {
     );
 
     List<SessaoJpa> findByStatus(StatusSessao status);
+
+    Optional<SessaoJpa> findById(UUID id);
+
+    List<SessaoJpa> findByFilmeId(UUID filmeId);
 }

@@ -15,16 +15,23 @@ public interface SessaoRepositorio {
     /**
      * Salva ou atualiza uma sessão no repositório.
      * @param sessao A entidade Sessao a ser salva.
-     * @return A entidade Sessao salva (pode ter ID atualizado se for nova).
+     * @return A entidade Sessao salva.
      */
     Sessao salvar(Sessao sessao);
 
     /**
      * Busca uma sessão pelo seu ID.
-     * @param sessaoId O ID da sessão a ser buscada.
-     * @return Um Optional contendo a Sessao se encontrada, ou Optional.empty() caso contrário.
+     * @param sessaoId O ID da sessão.
+     * @return Um Optional contendo a Sessao se encontrada.
      */
     Optional<Sessao> buscarPorId(SessaoId sessaoId);
+
+    /**
+     * Lista todas as sessões para um determinado filme.
+     * @param filmeId O ID do filme.
+     * @return Uma lista de sessões para o filme.
+     */
+    List<Sessao> buscarPorFilmeId(FilmeId filmeId);
 
     /**
      * Lista todas as sessões cadastradas.
