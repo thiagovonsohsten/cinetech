@@ -1,6 +1,6 @@
 # 🎬 Cinetech – Sistema Web de Cinema
 
-**Cinetech** é um sistema web para gestão de um cinema moderno, permitindo o controle completo de filmes, sessões, assentos, ingressos, avaliações, fidelidade e reservas para eventos. Este projeto é construído com **Spring Boot 3.3.0, JPA, H2 Database** no backend.
+**Cinetech** é um sistema web para gestão de um cinema moderno, permitindo o controle completo de filmes, sessões, assentos, ingressos, avaliações, fidelidade e reservas para eventos. Este projeto é construído com **Spring Boot 3.3.0, JPA, PostgreSQL** no backend.
 
 ---
 
@@ -10,7 +10,7 @@
 - Spring Boot 3.3.0
 - Spring Data JPA
 - Spring Validation
-- H2 Database
+- PostgreSQL
 - Lombok
 - Cucumber (para testes BDD)
 - Maven
@@ -89,11 +89,20 @@ src/main/java/com/cinetech/api/
 
 1. Clone o repositório
 2. Certifique-se de ter o Java 17 instalado
-3. Execute o projeto usando Maven:
+3. Instale o PostgreSQL e crie um banco chamado `cinetech`
+4. Configure o arquivo `src/main/resources/application.properties` com as credenciais do seu PostgreSQL:
+   ```properties
+   spring.datasource.url=jdbc:postgresql://localhost:5433/cinetech
+   spring.datasource.username=postgres
+   spring.datasource.password=SUA_SENHA_AQUI
+   ```
+5. Execute o projeto usando Maven:
    ```bash
    ./mvnw spring-boot:run
+   # ou
+   mvn spring-boot:run
    ```
-4. A aplicação estará disponível em `http://localhost:8080`
+6. A aplicação estará disponível em `http://localhost:8080`
 
 ---
 
@@ -103,6 +112,8 @@ O projeto utiliza Cucumber para testes de comportamento (BDD). Para executar os 
 
 ```bash
 ./mvnw test
+# ou
+mvn test
 ```
 
 ---
