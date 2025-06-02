@@ -13,10 +13,33 @@ import {
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import api from '../../services/api';
 import { Filme, Sessao, Avaliacao } from '../../types';
+
+// Função auxiliar para formatar datas de forma segura
+const formatarData = (dataString: string | undefined, formato: string) => {
+  if (!dataString) return 'Data indisponível';
+  
+  try {
+    // Tenta converter a string para um objeto Date
+    const data = parseISO(dataString);
+    if (isNaN(data.getTime())) {
+      throw new Error('Data inválida');
+    }
+    return format(data, formato, { locale: ptBR });
+  } catch (error) {
+    console.error('Erro ao formatar data:', error);
+    return 'Data indisponível';
+  }
+};
+
+// Função auxiliar para formatar preço
+const formatarPreco = (preco: number | undefined) => {
+  if (preco === undefined || preco === null) return 'Preço indisponível';
+  return `R$ ${preco.toFixed(2)}`;
+};
 
 const FilmeDetalhes: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -88,19 +111,19 @@ const FilmeDetalhes: React.FC = () => {
               {filme.titulo}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1 }}>
-              <Rating value={filme.notaMediaAvaliacao} precision={0.5} readOnly />
+              <Rating value={filme.notaMediaAvaliacao || 0} precision={0.5} readOnly />
               <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
-                ({filme.notaMediaAvaliacao.toFixed(1)})
+                ({(filme.notaMediaAvaliacao || 0).toFixed(1)})
               </Typography>
             </Box>
             <Chip
-              label={filme.classificacaoEtaria}
+              label={filme.classificacaoEtaria || 'Não informado'}
               color="primary"
               size="small"
               sx={{ mr: 1 }}
             />
             <Chip
-              label={`${filme.duracaoMinutos} min`}
+              label={`${filme.duracaoMinutos || 0} min`}
               color="secondary"
               size="small"
             />
@@ -113,7 +136,7 @@ const FilmeDetalhes: React.FC = () => {
           <Typography variant="h5" gutterBottom>
             Sinopse
           </Typography>
-          <Typography paragraph>{filme.sinopse}</Typography>
+          <Typography paragraph>{filme.sinopse || 'Sinopse não disponível'}</Typography>
 
           <Divider sx={{ my: 3 }} />
 
@@ -135,10 +158,8 @@ const FilmeDetalhes: React.FC = () => {
                 }
               >
                 <ListItemText
-                  primary={format(new Date(sessao.dataHora), "EEEE, d 'de' MMMM 'às' HH:mm", {
-                    locale: ptBR,
-                  })}
-                  secondary={`R$ ${sessao.preco.toFixed(2)} • ${sessao.assentosDisponiveis} assentos disponíveis`}
+                  primary={formatarData(sessao.dataHora, "EEEE, d 'de' MMMM 'às' HH:mm")}
+                  secondary={`${formatarPreco(sessao.preco)} • ${sessao.assentosDisponiveis || 0} assentos disponíveis`}
                 />
               </ListItem>
             ))}
@@ -155,13 +176,13 @@ const FilmeDetalhes: React.FC = () => {
                 <ListItemText
                   primary={
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Rating value={avaliacao.nota} readOnly size="small" />
+                      <Rating value={avaliacao.nota || 0} readOnly size="small" />
                       <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
-                        {format(new Date(avaliacao.dataAvaliacao), 'dd/MM/yyyy')}
+                        {formatarData(avaliacao.dataAvaliacao, 'dd/MM/yyyy')}
                       </Typography>
                     </Box>
                   }
-                  secondary={avaliacao.comentario}
+                  secondary={avaliacao.comentario || 'Sem comentário'}
                 />
               </ListItem>
             ))}

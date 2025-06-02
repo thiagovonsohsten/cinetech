@@ -27,7 +27,6 @@ public class FilmeJpa {
     @Column(length = 50)
     private String classificacaoEtaria; // Nome igual ao parâmetro do construtor de Filme
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String sinopse;
 
