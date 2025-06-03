@@ -211,27 +211,42 @@ O projeto utiliza JUnit 5 para testes unitários e de integração:
 
 ## 📚 Documentação
 
-### Arquitetura
-- [Clean Architecture](docs/clean-architecture.md)
-- [DDD](docs/ddd.md)
-- [Padrões de Projeto](docs/patterns.md)
+### ✅ Descrição do Domínio (Linguagem Onipresente)
+> Descrição detalhada do domínio com seus termos e contextos de negócio, seguindo os princípios de Domain-Driven Design.
 
-### API
-- [Swagger UI](http://localhost:8080/swagger-ui.html)
-- [OpenAPI](http://localhost:8080/v3/api-docs)
+📄 [Descrição do Domínio - Linguagem Onipresente](https://docs.google.com/document/d/1ljjS3MdCNJ1ICzl2iHkGtTbbmUeqh5sGUR-j-Z_dQPY/edit?usp=sharing)
 
 ---
 
-## 🤝 Contribuindo
+### ✅ Context Map Diagram
+> Modelo(s) do(s) subdomínio(s) desenvolvido com o Context Mapper (arquivo CML)
 
-1. Fork o projeto
-2. Crie sua branch (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/nova-funcionalidade`)
-5. Abra um Pull Request
+📄 [Diagramas UML gerados pela ferramenta](https://drive.google.com/drive/folders/1UUFX-MXj5uJZiZsWHHebn5MnIQWp-EC4?usp=sharing)
 
 ---
 
-## 📝 Licença
+### ✅ Mapa de Histórias do Usuário
+> Estrutura visual e textual das jornadas dos usuários do sistema com foco em suas experiências e funcionalidades.
 
+📄 [Mapa de Histórias do Usuário (PDF/PNG)](https://drive.google.com/drive/folders/1jvSpfGGg1DuddcfuCANlJetDbwfmFGyl?usp=sharing)
+
+---
+
+### ✅ Protótipos de Baixa Fidelidade
+> Protótipos esboçados das principais telas do sistema, apresentando navegação e experiência do usuário.
+
+📄 [Protótipos Baixa Fidelidade (Figma)](https://www.figma.com/design/ZJobBqNk6vtbl5q4hxJP8t/Untitled?node-id=1-3&t=yAPDriBurVbDJS1F-1)
+
+---
+
+### ✅ Cenários BDD (Behavior-Driven Development)
+> Modelos Given-When-Then para especificação e automação de testes com foco nas regras de negócio.
+
+📄 [Cenários BDD - Funcionalidades Implementadas (PDF ou Markdown)](https://docs.google.com/document/d/1NpiIm_egSG-9yo--d5ruzQnb9pZ8-D8GTQ4E4FA0H8g/edit?usp=drivesdk)
+
+---
+
+## 👥 Equipe
+
+Integrantes: Thiago von Sohsten, Enzo Nunes, Sérgio Gouveia, Thiago Belo, Gustavo Carneiro, Guilherme Alencar, José Jorge, Kauan Novello e Henrique Lobo
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
