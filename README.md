@@ -85,38 +85,30 @@ src/main/java/com/cinetech/api/
 
 ### Padrões de Projeto Implementados
 
-1. **Value Object Pattern**
-   - **Objetivo**: Representar identificadores imutáveis
+1. **Iterator Pattern**
+   - **Objetivo**: Fornecer uma maneira de acessar elementos de uma coleção sequencialmente sem expor sua representação interna
    - **Arquivos**:
-     - `src/main/java/com/cinetech/api/dominio/modelos/filme/FilmeId.java`
-     - `src/main/java/com/cinetech/api/dominio/modelos/sessao/SessaoId.java`
-     - `src/main/java/com/cinetech/api/dominio/modelos/cliente/ClienteId.java`
+     - `src/main/java/com/cinetech/api/dominio/modelos/sala/AssentoIterator.java`
+     - `src/main/java/com/cinetech/api/dominio/modelos/sala/Sala.java` (implementa `Iterable<Assento>`)
 
-2. **Repository Pattern**
-   - **Objetivo**: Abstrair a persistência de dados
+2. **Observer Pattern**
+   - **Objetivo**: Definir uma dependência um-para-muitos entre objetos, onde quando um objeto muda de estado, todos os seus dependentes são notificados
    - **Arquivos**:
-     - `src/main/java/com/cinetech/api/dominio/repositorios/FilmeRepositorio.java`
-     - `src/main/java/com/cinetech/api/dominio/repositorios/SessaoRepositorio.java`
-     - `src/main/java/com/cinetech/api/dominio/repositorios/ClienteRepositorio.java`
+     - `src/main/java/com/cinetech/api/dominio/modelos/sessao/ObservadorSessao.java`
+     - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/ProcessadorPagamento.java`
 
-3. **Factory Pattern**
-   - **Objetivo**: Encapsular a criação de objetos complexos
+3. **Strategy Pattern**
+   - **Objetivo**: Definir uma família de algoritmos, encapsular cada um deles e torná-los intercambiáveis
    - **Arquivos**:
-     - `src/main/java/com/cinetech/api/dominio/modelos/filme/FilmeId.java` (método `novo()`)
-     - `src/main/java/com/cinetech/api/dominio/modelos/sessao/SessaoId.java` (método `novo()`)
-     - `src/main/java/com/cinetech/api/dominio/modelos/cliente/ClienteId.java` (método `novo()`)
+     - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/EstrategiaDesconto.java`
+     - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/DescontoPromocao.java`
+     - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/DescontoFidelidade.java`
 
-4. **DTO Pattern**
-   - **Objetivo**: Transferir dados entre camadas
+4. **Template Method Pattern**
+   - **Objetivo**: Definir o esqueleto de um algoritmo em uma operação, adiando alguns passos para subclasses
    - **Arquivos**:
-     - `src/main/java/com/cinetech/api/infraestrutura/web/dto/ClienteDTO.java`
-
-5. **Mapper Pattern**
-   - **Objetivo**: Converter entre objetos de domínio e entidades JPA
-   - **Arquivos**:
-     - `src/main/java/com/cinetech/api/infraestrutura/persistencia/mapper/FilmeMapper.java`
-     - `src/main/java/com/cinetech/api/infraestrutura/persistencia/mapper/SessaoMapper.java`
-     - `src/main/java/com/cinetech/api/infraestrutura/persistencia/mapper/ClienteMapper.java`
+     - `src/main/java/com/cinetech/api/dominio/modelos/sessao/Sessao.java`
+     - `src/main/java/com/cinetech/api/dominio/modelos/assento/Assento.java`
 
 ---
 
