@@ -225,6 +225,60 @@ mvn test
 
 ---
 
+## 🎯 Padrões de Projeto Implementados
+
+O projeto utiliza diversos padrões de projeto para garantir uma arquitetura limpa, manutenível e extensível:
+
+### Strategy Pattern
+- **Objetivo**: Encapsular diferentes algoritmos de desconto
+- **Arquivos**:
+  - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/EstrategiaDesconto.java` (Interface)
+  - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/DescontoFidelidade.java` (Implementação)
+  - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/DescontoPromocao.java` (Implementação)
+
+### Observer Pattern
+- **Objetivo**: Notificar componentes sobre mudanças no estado das sessões
+- **Arquivos**:
+  - `src/main/java/com/cinetech/api/dominio/modelos/sessao/ObservadorSessao.java` (Interface)
+  - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/ProcessadorPagamento.java` (Implementação)
+
+### Iterator Pattern
+- **Objetivo**: Iterar sobre os assentos de uma sala de forma padronizada
+- **Arquivos**:
+  - `src/main/java/com/cinetech/api/dominio/modelos/sala/Assento.java`
+  - `src/main/java/com/cinetech/api/dominio/modelos/sala/AssentoIterator.java`
+  - `src/main/java/com/cinetech/api/dominio/modelos/sala/Sala.java` (Implementa Iterable)
+
+### Value Object Pattern
+- **Objetivo**: Representar identificadores imutáveis
+- **Arquivos**:
+  - `src/main/java/com/cinetech/api/dominio/modelos/filme/FilmeId.java`
+  - `src/main/java/com/cinetech/api/dominio/modelos/sala/SalaId.java`
+  - `src/main/java/com/cinetech/api/dominio/modelos/sessao/SessaoId.java`
+  - `src/main/java/com/cinetech/api/dominio/modelos/cliente/ClienteId.java`
+
+### Repository Pattern
+- **Objetivo**: Abstrair a persistência de dados
+- **Arquivos**:
+  - `src/main/java/com/cinetech/api/dominio/repositorios/FilmeRepository.java`
+  - `src/main/java/com/cinetech/api/dominio/repositorios/SalaRepository.java`
+  - `src/main/java/com/cinetech/api/dominio/repositorios/SessaoRepository.java`
+
+### Factory Pattern
+- **Objetivo**: Encapsular a criação de objetos complexos
+- **Arquivos**:
+  - `src/main/java/com/cinetech/api/dominio/modelos/filme/FilmeFactory.java`
+  - `src/main/java/com/cinetech/api/dominio/modelos/sessao/SessaoFactory.java`
+
+### Mapper Pattern
+- **Objetivo**: Converter entre objetos de domínio e entidades JPA
+- **Arquivos**:
+  - `src/main/java/com/cinetech/api/infraestrutura/persistencia/mapper/FilmeMapper.java`
+  - `src/main/java/com/cinetech/api/infraestrutura/persistencia/mapper/SalaMapper.java`
+  - `src/main/java/com/cinetech/api/infraestrutura/persistencia/mapper/SessaoMapper.java`
+
+---
+
 ## 👥 Equipe
 
 Integrantes: Thiago von Sohsten, Enzo Nunes, Sérgio Gouveia, Thiago Belo, Gustavo Carneiro, Guilherme Alencar, José Jorge, Kauan Novello e Henrique Lobo

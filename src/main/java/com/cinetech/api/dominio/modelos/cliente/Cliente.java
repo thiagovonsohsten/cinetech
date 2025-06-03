@@ -24,6 +24,7 @@ public class Cliente {
     private PerfilCliente perfil;
     private String senha;
     private LocalDate dataNascimento;
+    private boolean elegivelMeiaEntrada;
 
     private final List<CreditoCompensacao> creditosCompensacao;
     private final List<PontoFidelidade> pontosFidelidade;
@@ -56,6 +57,7 @@ public class Cliente {
         setPerfil(perfil);
         setDataNascimento(dataNascimento);
         setSenha(senha);
+        this.elegivelMeiaEntrada = false;
 
         Objects.requireNonNull(creditosCompensacao, "Lista de créditos de compensação não pode ser nula.");
         creditosCompensacao.forEach(credito -> {
@@ -127,6 +129,14 @@ public class Cliente {
 
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = Objects.requireNonNull(dataNascimento, "Data de nascimento do cliente não pode ser nula.");
+    }
+
+    public boolean isElegivelMeiaEntrada() {
+        return elegivelMeiaEntrada;
+    }
+
+    public void setElegivelMeiaEntrada(boolean elegivelMeiaEntrada) {
+        this.elegivelMeiaEntrada = elegivelMeiaEntrada;
     }
 
 
@@ -224,7 +234,8 @@ public class Cliente {
     public boolean elegivelParaMeiaEntrada() {
         return this.perfil == PerfilCliente.ESTUDANTE ||
                 this.perfil == PerfilCliente.IDOSO ||
-                this.perfil == PerfilCliente.PCD;
+                this.perfil == PerfilCliente.PCD ||
+                this.elegivelMeiaEntrada;
     }
 
     @Override

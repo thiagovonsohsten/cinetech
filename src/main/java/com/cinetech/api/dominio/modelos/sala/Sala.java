@@ -1,10 +1,11 @@
 package com.cinetech.api.dominio.modelos.sala;
 
 import com.cinetech.api.dominio.enums.TipoSala;
-
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
-public class Sala {
+public class Sala implements Iterable<Assento> {
     private final SalaId id;
     private String nome;
     private int capacidadeTotal; // [cite: 13]
@@ -13,6 +14,7 @@ public class Sala {
     // A descrição de "possuir assentos comuns, VIP ou PCD" [cite: 4, 13]
     // será refletida na configuração dos Assentos dentro de uma Sessao nesta Sala,
     // ou em um layout padrão da sala. Para o modelo da Sala em si, a capacidade é o principal.
+    private List<Assento> assentos;
 
     // Construtor para nova sala
     public Sala(String nome, int capacidadeTotal, TipoSala tipo, boolean disponivelParaEventos) {
@@ -34,6 +36,7 @@ public class Sala {
     public int getCapacidadeTotal() { return capacidadeTotal; }
     public TipoSala getTipo() { return tipo; }
     public boolean isDisponivelParaEventos() { return disponivelParaEventos; }
+    public List<Assento> getAssentos() { return assentos; }
 
     // Setters com validação
     public void setNome(String nome) {
@@ -56,6 +59,15 @@ public class Sala {
 
     public void setDisponivelParaEventos(boolean disponivelParaEventos) {
         this.disponivelParaEventos = disponivelParaEventos;
+    }
+
+    public void setAssentos(List<Assento> assentos) {
+        this.assentos = assentos;
+    }
+
+    @Override
+    public Iterator<Assento> iterator() {
+        return new AssentoIterator(assentos);
     }
 
     @Override
