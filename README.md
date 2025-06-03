@@ -87,22 +87,92 @@ src/main/java/com/cinetech/api/
 
 ## 🚀 Como Executar
 
-1. Clone o repositório
-2. Certifique-se de ter o Java 17 instalado
-3. Instale o PostgreSQL e crie um banco chamado `cinetech`
-4. Configure o arquivo `src/main/resources/application.properties` com as credenciais do seu PostgreSQL:
+### Pré-requisitos
+
+1. Java 17 ou superior
+2. Maven
+3. PostgreSQL 12 ou superior
+4. Node.js 16 ou superior (para o frontend)
+5. npm ou yarn (para o frontend)
+
+### Configuração do Banco de Dados
+
+1. Instale o PostgreSQL se ainda não tiver instalado
+2. Crie um banco de dados chamado `cinetech`:
+   ```sql
+   CREATE DATABASE cinetech;
+   ```
+3. Configure o arquivo `src/main/resources/application.properties` com as credenciais do seu PostgreSQL:
    ```properties
    spring.datasource.url=jdbc:postgresql://localhost:5433/cinetech
    spring.datasource.username=postgres
    spring.datasource.password=SUA_SENHA_AQUI
    ```
-5. Execute o projeto usando Maven:
+
+### Executando o Backend
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/seu-usuario/cinetech.git
+   cd cinetech
+   ```
+
+2. Execute o projeto usando Maven:
    ```bash
    ./mvnw spring-boot:run
    # ou
    mvn spring-boot:run
    ```
-6. A aplicação estará disponível em `http://localhost:8080`
+
+3. O Flyway executará automaticamente as migrações do banco de dados
+4. A API estará disponível em `http://localhost:8080`
+
+### Executando o Frontend
+
+1. Navegue até a pasta do frontend:
+   ```bash
+   cd frontend
+   ```
+
+2. Instale as dependências:
+   ```bash
+   npm install
+   # ou
+   yarn install
+   ```
+
+3. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm start
+   # ou
+   yarn start
+   ```
+
+4. O frontend estará disponível em `http://localhost:3000`
+
+### Verificando se está tudo funcionando
+
+1. Verifique se o backend está rodando acessando:
+   ```
+   http://localhost:8080/api/filmes
+   ```
+   Deve retornar uma lista (vazia inicialmente) de filmes.
+
+2. Verifique se o frontend está rodando acessando:
+   ```
+   http://localhost:3000
+   ```
+   Deve mostrar a página inicial do sistema.
+
+### Solução de Problemas
+
+Se encontrar algum erro:
+
+1. Verifique se o PostgreSQL está rodando
+2. Verifique se as credenciais do banco estão corretas
+3. Verifique se o banco `cinetech` foi criado
+4. Verifique se as migrações foram executadas corretamente
+5. Verifique os logs da aplicação para mais detalhes
 
 ---
 
