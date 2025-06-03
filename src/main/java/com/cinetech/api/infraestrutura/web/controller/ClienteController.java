@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,11 +52,22 @@ public class ClienteController {
                 return ResponseEntity.badRequest().body("Perfil do cliente é obrigatório");
             }
 
+            // Define valores padrão para campos obrigatórios não fornecidos
+            if (clienteDTO.getDataNascimento() == null) {
+                clienteDTO.setDataNascimento(LocalDate.now());
+            }
+
+            if (clienteDTO.getSenha() == null || clienteDTO.getSenha().trim().isEmpty()) {
+                clienteDTO.setSenha("senha123");
+            }
+
             Cliente cliente = clienteAplicacao.cadastrarNovoCliente(
                 clienteDTO.getNome(),
                 clienteDTO.getEmail(),
                 clienteDTO.getCpf(),
-                clienteDTO.getPerfil()
+                clienteDTO.getPerfil(),
+                clienteDTO.getDataNascimento(),
+                clienteDTO.getSenha()
             );
             
             logger.info("Cliente cadastrado com sucesso: {}", cliente.getId());

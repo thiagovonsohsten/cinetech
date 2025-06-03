@@ -41,14 +41,14 @@ public class ClienteAplicacao {
     }
 
     @Transactional
-    public Cliente cadastrarNovoCliente(String nome, String email, String cpf, PerfilCliente perfil) {
+    public Cliente cadastrarNovoCliente(String nome, String email, String cpf, PerfilCliente perfil, LocalDate dataNascimento, String senha) {
         if (clienteRepositorio.buscarPorCpf(cpf).isPresent()) {
             throw new IllegalArgumentException("CPF " + cpf + " já cadastrado.");
         }
         if (clienteRepositorio.buscarPorEmail(email).isPresent()) {
             throw new IllegalArgumentException("Email " + email + " já cadastrado.");
         }
-        Cliente novoCliente = new Cliente(nome, email, cpf, perfil);
+        Cliente novoCliente = new Cliente(nome, email, cpf, perfil, dataNascimento, senha);
         return clienteRepositorio.salvar(novoCliente);
     }
 

@@ -155,8 +155,6 @@ public class SessaoRepositorioJpa implements SessaoRepositorio {
     @Override
     public List<Sessao> buscarPorFilmeId(FilmeId filmeId) {
         UUID filmeIdPrimitivo = FilmeMapper.toPrimitiveId(filmeId);
-        return jpaRepositoryInternal.findByFilmeId(filmeIdPrimitivo).stream()
-                .map(SessaoMapper::toDomainEntity)
-                .collect(Collectors.toList());
+        return reconstruirListaAgregadosSessao(jpaRepositoryInternal.findByFilmeId(filmeIdPrimitivo));
     }
 }

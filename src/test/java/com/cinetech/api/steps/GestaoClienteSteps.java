@@ -59,7 +59,14 @@ public class GestaoClienteSteps {
     @Quando("eu cadastro o cliente no sistema")
     public void cadastroClienteSistema() {
         try {
-            clienteAplicacao.cadastrarNovoCliente(cliente.getNome(), cliente.getEmail(), cliente.getCpf(), cliente.getPerfil());
+            clienteAplicacao.cadastrarNovoCliente(
+                cliente.getNome(), 
+                cliente.getEmail(), 
+                cliente.getCpf(), 
+                cliente.getPerfil(),
+                LocalDate.now(), // Data de nascimento padrão
+                "senha123" // Senha padrão
+            );
         } catch (Exception e) {
             excecao = e;
         }
