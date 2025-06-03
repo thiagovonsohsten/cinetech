@@ -2,12 +2,12 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 import api from '../services/api';
 
 interface AuthState {
-  token: string;
   cliente: {
     id: string;
     nome: string;
     email: string;
-  };
+    perfil: string;
+  } | null;
 }
 
 interface SignInCredentials {
@@ -20,6 +20,7 @@ interface AuthContextData {
     id: string;
     nome: string;
     email: string;
+    perfil: string;
   } | null;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
@@ -30,34 +31,37 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
-    const token = localStorage.getItem('@CineTech:token');
     const cliente = localStorage.getItem('@CineTech:cliente');
 
-    if (token && cliente) {
-      api.defaults.headers.authorization = `Bearer ${token}`;
-      return { token, cliente: JSON.parse(cliente) };
+    if (cliente) {
+      return { cliente: JSON.parse(cliente) };
     }
 
-    return {} as AuthState;
+    return { cliente: null };
   });
 
   const signIn = useCallback(async ({ email, senha }: SignInCredentials) => {
-    const response = await api.post('/auth/login', { email, senha });
-    const { token, cliente } = response.data;
+    try {
+      const response = await api.post('/auth/login', {
+        email: email.trim(),
+        senha: senha.trim()
+      });
 
-    localStorage.setItem('@CineTech:token', token);
-    localStorage.setItem('@CineTech:cliente', JSON.stringify(cliente));
+      const { id, nome, email: emailCliente, perfil } = response.data;
 
-    api.defaults.headers.authorization = `Bearer ${token}`;
+      const cliente = { id, nome, email: emailCliente, perfil };
+      localStorage.setItem('@CineTech:cliente', JSON.stringify(cliente));
 
-    setData({ token, cliente });
+      setData({ cliente });
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      throw new Error('Email ou senha inválidos');
+    }
   }, []);
 
   const signOut = useCallback(() => {
-    localStorage.removeItem('@CineTech:token');
     localStorage.removeItem('@CineTech:cliente');
-
-    setData({} as AuthState);
+    setData({ cliente: null });
   }, []);
 
   return (

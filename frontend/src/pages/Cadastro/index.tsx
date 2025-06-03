@@ -7,6 +7,10 @@ import {
   Paper,
   Link,
   Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -30,6 +34,9 @@ const validationSchema = yup.object({
       'Data de nascimento deve estar no formato DD/MM/AAAA'
     )
     .required('Data de nascimento é obrigatória'),
+  perfil: yup
+    .string()
+    .required('Perfil é obrigatório'),
   senha: yup
     .string()
     .min(6, 'A senha deve ter no mínimo 6 caracteres')
@@ -50,6 +57,7 @@ const Cadastro: React.FC = () => {
       email: '',
       cpf: '',
       dataNascimento: '',
+      perfil: '',
       senha: '',
       confirmarSenha: '',
     },
@@ -61,6 +69,7 @@ const Cadastro: React.FC = () => {
           email: values.email,
           cpf: values.cpf,
           dataNascimento: values.dataNascimento,
+          perfil: values.perfil,
           senha: values.senha,
         });
         navigate('/login');
@@ -147,6 +156,24 @@ const Cadastro: React.FC = () => {
             margin="normal"
             placeholder="DD/MM/AAAA"
           />
+
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="perfil-label">Perfil</InputLabel>
+            <Select
+              labelId="perfil-label"
+              id="perfil"
+              name="perfil"
+              value={formik.values.perfil}
+              onChange={formik.handleChange}
+              error={formik.touched.perfil && Boolean(formik.errors.perfil)}
+              label="Perfil"
+            >
+              <MenuItem value="COMUM">Comum</MenuItem>
+              <MenuItem value="ESTUDANTE">Estudante</MenuItem>
+              <MenuItem value="IDOSO">Idoso</MenuItem>
+              <MenuItem value="PCD">PCD</MenuItem>
+            </Select>
+          </FormControl>
 
           <TextField
             fullWidth

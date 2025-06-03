@@ -2,6 +2,7 @@ package com.cinetech.api.infraestrutura.persistencia.entidade;
 
 import com.cinetech.api.dominio.enums.PerfilCliente;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +23,12 @@ public class ClienteJpa {
 
     @Column(nullable = false, unique = true, length = 11) // Apenas números
     private String cpf;
+
+    @Column(nullable = false, length = 100)
+    private String senha;
+
+    @Column(nullable = false)
+    private LocalDate dataNascimento;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
@@ -47,6 +54,10 @@ public class ClienteJpa {
     public void setEmail(String email) { this.email = email; }
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
+    public LocalDate getDataNascimento() { return dataNascimento; }
+    public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
     public PerfilCliente getPerfil() { return perfil; }
     public void setPerfil(PerfilCliente perfil) { this.perfil = perfil; }
     public List<CreditoCompensacaoJpa> getCreditosCompensacaoJpa() { return creditosCompensacaoJpa; }
@@ -71,7 +82,6 @@ public class ClienteJpa {
         pontosFidelidadeJpa.remove(ponto);
         ponto.setCliente(null);
     }
-
 
     @Override
     public boolean equals(Object o) {

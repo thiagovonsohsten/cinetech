@@ -47,6 +47,8 @@ public class ClienteMapper {
         jpaEntity.setEmail(domainEntity.getEmail());
         jpaEntity.setCpf(domainEntity.getCpf());
         jpaEntity.setPerfil(domainEntity.getPerfil());
+        jpaEntity.setSenha(domainEntity.getSenha());
+        jpaEntity.setDataNascimento(domainEntity.getDataNascimento());
 
         if (domainEntity.getCreditosCompensacao() != null) {
             List<CreditoCompensacaoJpa> creditosJpa = domainEntity.getCreditosCompensacao().stream()
@@ -108,6 +110,8 @@ public class ClienteMapper {
                 jpaEntity.getEmail(),
                 jpaEntity.getCpf(),
                 jpaEntity.getPerfil(),
+                jpaEntity.getDataNascimento(),
+                jpaEntity.getSenha(),
                 creditosDominio,
                 pontosDominio
         );

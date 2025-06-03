@@ -66,6 +66,19 @@ public class ClienteAplicacao {
         return clienteRepositorio.buscarPorCpf(cpf);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<Cliente> buscarClientePorEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email não pode ser vazio para busca.");
+        }
+        return clienteRepositorio.buscarPorEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Cliente> buscarTodos() {
+        return clienteRepositorio.buscarTodos();
+    }
+
     @Transactional
     public void emitirCreditosParaSessaoCancelada(SessaoId sessaoIdCancelada) {
         Objects.requireNonNull(sessaoIdCancelada, "ID da Sessão cancelada não pode ser nulo.");
@@ -83,13 +96,11 @@ public class ClienteAplicacao {
         }
 
         for (Ingresso ingresso : ingressosDaSessao) {
-            // Carrega o cliente para garantir que estamos trabalhando com a instância mais recente
-            // e para que as alterações em sua lista de créditos sejam persistidas corretamente.
             Cliente clienteDoIngresso = clienteRepositorio.buscarPorId(ingresso.getCliente().getId())
                     .orElseThrow(() -> new IllegalStateException("Cliente do ingresso " + ingresso.getId() + " não encontrado."));
 
             BigDecimal valorCredito = ingresso.getValorPago();
-            LocalDateTime dataValidadeCredito = LocalDateTime.now().plusYears(1); // Ex: validade de 1 ano
+            LocalDateTime dataValidadeCredito = LocalDateTime.now().plusYears(1);
             String motivo = "Crédito por cancelamento da sessão ID: " + sessaoCancelada.getId() +
                     " (Filme: " + sessaoCancelada.getFilme().getTitulo() +
                     ", Horário: " + sessaoCancelada.getDataHoraInicio() + ")";
@@ -101,12 +112,11 @@ public class ClienteAplicacao {
                     motivo,
                     sessaoCancelada.getId()
             );
-            clienteDoIngresso.adicionarCreditoCompensacao(novoCredito); // Método na entidade Cliente
-            clienteRepositorio.salvar(clienteDoIngresso); // Salva o cliente com o novo crédito
+            clienteDoIngresso.adicionarCreditoCompensacao(novoCredito);
+            clienteRepositorio.salvar(clienteDoIngresso);
 
             System.out.println("INFO APP: Crédito de " + valorCredito + " emitido para cliente " + clienteDoIngresso.getId() +
                     " devido ao cancelamento da sessão " + sessaoIdCancelada);
-            // Aqui poderia haver uma notificação ao cliente
         }
     }
 

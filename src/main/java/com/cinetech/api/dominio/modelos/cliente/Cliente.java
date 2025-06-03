@@ -22,6 +22,8 @@ public class Cliente {
     private String email;
     private String cpf;
     private PerfilCliente perfil;
+    private String senha;
+    private LocalDate dataNascimento;
 
     private final List<CreditoCompensacao> creditosCompensacao;
     private final List<PontoFidelidade> pontosFidelidade;
@@ -32,16 +34,28 @@ public class Cliente {
     private static final Pattern CPF_PATTERN = Pattern.compile("^\\d{11}$");
 
     public Cliente(String nome, String email, String cpf, PerfilCliente perfil) {
-        this(ClienteId.novo(), nome, email, cpf, perfil, new ArrayList<>(), new ArrayList<>());
+        this(ClienteId.novo(), nome, email, cpf, perfil, LocalDate.now(), "senha123", new ArrayList<>(), new ArrayList<>());
+    }
+
+    public Cliente(String nome, String email, String cpf, PerfilCliente perfil, LocalDate dataNascimento, String senha) {
+        this(ClienteId.novo(), nome, email, cpf, perfil, dataNascimento, senha, new ArrayList<>(), new ArrayList<>());
     }
 
     public Cliente(ClienteId id, String nome, String email, String cpf, PerfilCliente perfil,
+                   List<CreditoCompensacao> creditosCompensacao, List<PontoFidelidade> pontosFidelidade) {
+        this(id, nome, email, cpf, perfil, LocalDate.now(), "senha123", creditosCompensacao, pontosFidelidade);
+    }
+
+    public Cliente(ClienteId id, String nome, String email, String cpf, PerfilCliente perfil,
+                   LocalDate dataNascimento, String senha,
                    List<CreditoCompensacao> creditosCompensacao, List<PontoFidelidade> pontosFidelidade) {
         this.id = Objects.requireNonNull(id, "ID do Cliente não pode ser nulo.");
         setNome(nome);
         setEmail(email);
         setCpf(cpf);
         setPerfil(perfil);
+        setDataNascimento(dataNascimento);
+        setSenha(senha);
 
         Objects.requireNonNull(creditosCompensacao, "Lista de créditos de compensação não pode ser nula.");
         creditosCompensacao.forEach(credito -> {
@@ -67,6 +81,8 @@ public class Cliente {
     public String getEmail() { return email; }
     public String getCpf() { return cpf; }
     public PerfilCliente getPerfil() { return perfil; }
+    public String getSenha() { return senha; }
+    public LocalDate getDataNascimento() { return dataNascimento; }
     public List<CreditoCompensacao> getCreditosCompensacao() { return List.copyOf(creditosCompensacao); }
     public List<PontoFidelidade> getPontosFidelidade() { return List.copyOf(pontosFidelidade); }
 
@@ -97,6 +113,20 @@ public class Cliente {
 
     public void setPerfil(PerfilCliente perfil) {
         this.perfil = Objects.requireNonNull(perfil, "Perfil do cliente não pode ser nulo.");
+    }
+
+    public void setSenha(String senha) {
+        if (senha == null || senha.trim().isEmpty()) {
+            throw new IllegalArgumentException("Senha não pode ser vazia.");
+        }
+        if (senha.length() < 6) {
+            throw new IllegalArgumentException("Senha deve ter no mínimo 6 caracteres.");
+        }
+        this.senha = senha;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = Objects.requireNonNull(dataNascimento, "Data de nascimento do cliente não pode ser nula.");
     }
 
 
