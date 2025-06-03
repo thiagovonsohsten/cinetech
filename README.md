@@ -9,7 +9,7 @@
 ### Primeira Entrega
 
 1. **Gerenciamento de Filmes**
-   - [F1] Cadastro de filmes com informações básicas
+   - [F1] Cadastro de filmes com informações básicas (título, gênero, duração, idioma, classificação etária)
    - [F2] Remoção automática após fim de exibição
    - [F3] Remoção automática de filmes com avaliação baixa (< 2.5)
 
@@ -23,18 +23,17 @@
 
 ### Segunda Entrega
 
-1. **Sistema de Fidelidade**
-   - [F8] Acúmulo de pontos por compras
-   - [F9] Aplicação de descontos por fidelidade
+1. **Sistema de Clientes**
+   - [F8] Cadastro de clientes com validação de CPF e email
+   - [F9] Controle de perfil de cliente (comum, VIP)
 
-2. **Sistema de Promoções**
-   - [F10] Cadastro de promoções por horário
-   - [F11] Cadastro de promoções por perfil (meia-entrada)
-   - [F12] Aplicação automática de descontos
+2. **Sistema de Fidelidade**
+   - [F10] Acúmulo de pontos por compras
+   - [F11] Aplicação de descontos por fidelidade
 
-3. **Sistema de Avaliações**
-   - [F13] Avaliação de filmes (1-5)
-   - [F14] Cálculo de média de avaliações
+3. **Sistema de Promoções**
+   - [F12] Cadastro de promoções por horário
+   - [F13] Cadastro de promoções por perfil (meia-entrada)
 
 ---
 
@@ -73,53 +72,51 @@ src/main/java/com/cinetech/api/
 ├── dominio/            # Entidades e regras de negócio
 │   ├── modelos/        # Entidades de domínio
 │   ├── portas/         # Interfaces (ports)
+│   ├── repositorios/   # Interfaces de repositório
 │   └── servicos/       # Serviços de domínio
 └── infraestrutura/     # Implementações técnicas
-    ├── persistencia/   # Implementações de repositórios
+    ├── persistencia/   # Implementações de repositório
+    │   ├── entidade/   # Entidades JPA
+    │   ├── jpa/        # Repositórios JPA
+    │   └── mapper/     # Mapeadores
     ├── web/           # Controllers e DTOs
     └── config/        # Configurações
 ```
 
 ### Padrões de Projeto Implementados
 
-1. **Strategy Pattern**
-   - **Objetivo**: Encapsular diferentes algoritmos de desconto
-   - **Arquivos**:
-     - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/EstrategiaDesconto.java` (Interface)
-     - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/DescontoFidelidade.java` (Implementação)
-     - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/DescontoPromocao.java` (Implementação)
-
-2. **Observer Pattern**
-   - **Objetivo**: Notificar componentes sobre mudanças no estado das sessões
-   - **Arquivos**:
-     - `src/main/java/com/cinetech/api/dominio/modelos/sessao/ObservadorSessao.java` (Interface)
-     - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/ProcessadorPagamento.java` (Implementação)
-
-3. **Repository Pattern**
-   - **Objetivo**: Abstrair a persistência de dados
-   - **Arquivos**:
-     - `src/main/java/com/cinetech/api/dominio/repositorios/FilmeRepositorio.java`
-     - `src/main/java/com/cinetech/api/dominio/repositorios/SessaoRepositorio.java`
-     - `src/main/java/com/cinetech/api/dominio/repositorios/PromocaoRepositorio.java`
-
-4. **Value Object Pattern**
+1. **Value Object Pattern**
    - **Objetivo**: Representar identificadores imutáveis
    - **Arquivos**:
      - `src/main/java/com/cinetech/api/dominio/modelos/filme/FilmeId.java`
      - `src/main/java/com/cinetech/api/dominio/modelos/sessao/SessaoId.java`
      - `src/main/java/com/cinetech/api/dominio/modelos/cliente/ClienteId.java`
 
-5. **Factory Pattern**
+2. **Repository Pattern**
+   - **Objetivo**: Abstrair a persistência de dados
+   - **Arquivos**:
+     - `src/main/java/com/cinetech/api/dominio/repositorios/FilmeRepositorio.java`
+     - `src/main/java/com/cinetech/api/dominio/repositorios/SessaoRepositorio.java`
+     - `src/main/java/com/cinetech/api/dominio/repositorios/ClienteRepositorio.java`
+
+3. **Factory Pattern**
    - **Objetivo**: Encapsular a criação de objetos complexos
    - **Arquivos**:
      - `src/main/java/com/cinetech/api/dominio/modelos/filme/FilmeId.java` (método `novo()`)
      - `src/main/java/com/cinetech/api/dominio/modelos/sessao/SessaoId.java` (método `novo()`)
+     - `src/main/java/com/cinetech/api/dominio/modelos/cliente/ClienteId.java` (método `novo()`)
 
-6. **Service Pattern**
-   - **Objetivo**: Implementar regras de negócio complexas
+4. **DTO Pattern**
+   - **Objetivo**: Transferir dados entre camadas
    - **Arquivos**:
-     - `src/main/java/com/cinetech/api/dominio/servicos/PrecificacaoServico.java`
-     - `src/main/java/com/cinetech/api/dominio/servicos/GestaoPontosFidelidadeServico.java`
+     - `src/main/java/com/cinetech/api/infraestrutura/web/dto/ClienteDTO.java`
+
+5. **Mapper Pattern**
+   - **Objetivo**: Converter entre objetos de domínio e entidades JPA
+   - **Arquivos**:
+     - `src/main/java/com/cinetech/api/infraestrutura/persistencia/mapper/FilmeMapper.java`
+     - `src/main/java/com/cinetech/api/infraestrutura/persistencia/mapper/SessaoMapper.java`
+     - `src/main/java/com/cinetech/api/infraestrutura/persistencia/mapper/ClienteMapper.java`
 
 ---
 
