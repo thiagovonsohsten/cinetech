@@ -5,6 +5,7 @@ import com.cinetech.api.dominio.modelos.sessao.SessaoId;
 import com.cinetech.api.dominio.modelos.sala.SalaId;
 import com.cinetech.api.dominio.modelos.filme.FilmeId;
 import com.cinetech.api.dominio.modelos.assento.Assento;
+import com.cinetech.api.dominio.modelos.assento.AssentoBase;
 import com.cinetech.api.dominio.modelos.cliente.ClienteId; // Necessário para o construtor de Assento
 import com.cinetech.api.dominio.enums.StatusSessao;
 import com.cinetech.api.dominio.repositorios.SessaoRepositorio;
@@ -49,7 +50,7 @@ public class SessaoRepositorioJpa implements SessaoRepositorio {
             for (AssentoJpa assentoJpa : sessaoJpa.getAssentos()) {
                 // Chama o método estático AssentoMapper.toDomainEntity,
                 // passando a sessaoDominio pai como contexto.
-                Assento assentoDominio = AssentoMapper.toDomainEntity(assentoJpa, sessaoDominio);
+                AssentoBase assentoDominio = (AssentoBase) AssentoMapper.toDomainEntity(assentoJpa, sessaoDominio);
                 sessaoDominio.adicionarAssento(assentoDominio); // Método da entidade Sessao
             }
         }

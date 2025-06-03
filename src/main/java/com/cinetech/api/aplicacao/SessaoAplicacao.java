@@ -4,6 +4,7 @@ import com.cinetech.api.dominio.enums.StatusAssento;
 import com.cinetech.api.dominio.enums.StatusSessao;
 import com.cinetech.api.dominio.enums.TipoExibicao;
 import com.cinetech.api.dominio.modelos.assento.Assento;
+import com.cinetech.api.dominio.modelos.assento.AssentoBase;
 import com.cinetech.api.dominio.modelos.cliente.ClienteId;
 import com.cinetech.api.dominio.modelos.filme.Filme;
 import com.cinetech.api.dominio.modelos.filme.FilmeId;
@@ -108,10 +109,10 @@ public class SessaoAplicacao {
 
     /**
      * Caso de Uso: Visualizar os assentos de uma sessão (Mapa de Assentos - F1, Source 9).
-     * Retorna a lista de entidades de domínio Assento.
+     * Retorna a lista de entidades de domínio AssentoBase.
      */
     @Transactional(readOnly = true)
-    public List<Assento> buscarAssentosDaSessao(SessaoId sessaoId) {
+    public List<AssentoBase> buscarAssentosDaSessao(SessaoId sessaoId) {
         Objects.requireNonNull(sessaoId, "ID da Sessão não pode ser nulo.");
         Sessao sessao = sessaoRepositorio.buscarPorId(sessaoId)
                 .orElseThrow(() -> new IllegalArgumentException("Sessão com ID " + sessaoId + " não encontrada."));

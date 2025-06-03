@@ -6,6 +6,7 @@ import com.cinetech.api.dominio.modelos.ingresso.IngressoId;
 import com.cinetech.api.dominio.modelos.cliente.Cliente; // Objeto de domínio
 import com.cinetech.api.dominio.modelos.sessao.Sessao;   // Objeto de domínio
 import com.cinetech.api.dominio.modelos.assento.Assento; // Objeto de domínio
+import com.cinetech.api.dominio.modelos.assento.AssentoBase;
 import com.cinetech.api.dominio.modelos.promocao.PromocaoId; // VO
 import com.cinetech.api.infraestrutura.persistencia.entidade.IngressoJpa;
 import com.cinetech.api.infraestrutura.persistencia.entidade.ClienteJpa;   // Para referência
@@ -103,7 +104,7 @@ public class IngressoMapper {
             // Precisamos construir o Assento de domínio com a referência à Sessao de domínio.
             // Isso idealmente seria feito por AssentoMapper.toDomainEntity(AssentoJpa, Sessao).
             // Como estamos fazendo manual aqui:
-            assentoDominio = new Assento(
+            assentoDominio = new AssentoBase(
                     AssentoMapper.uuidToAssentoId(jpaEntity.getAssento().getId()), // Usa helper do AssentoMapper
                     sessaoDominio,
                     jpaEntity.getAssento().getIdentificadorPosicao(),

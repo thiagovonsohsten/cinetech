@@ -1,6 +1,7 @@
 package com.cinetech.api.infraestrutura.persistencia.mapper;
 
 import com.cinetech.api.dominio.modelos.assento.Assento;
+import com.cinetech.api.dominio.modelos.assento.AssentoBase;
 import com.cinetech.api.dominio.modelos.assento.AssentoId;
 import com.cinetech.api.dominio.modelos.cliente.ClienteId;
 import com.cinetech.api.dominio.modelos.sessao.Sessao; // Para o construtor de Assento (domínio)
@@ -61,7 +62,7 @@ public class AssentoMapper {
     // --- Mapeamento para Entidade de Domínio ---
     // Este método é usado pelo SessaoRepositorioJpa para construir o Assento de domínio
     // dentro do contexto de uma Sessao de domínio já existente.
-    public static Assento toDomainEntity(AssentoJpa jpaEntity, Sessao sessaoDominioPai) {
+    public static AssentoBase toDomainEntity(AssentoJpa jpaEntity, Sessao sessaoDominioPai) {
         if (jpaEntity == null) {
             return null;
         }
@@ -72,10 +73,10 @@ public class AssentoMapper {
             clienteIdReserva = ClienteId.de(jpaEntity.getClienteIdReservaTemporaria());
         }
 
-        // Usa o construtor completo de Assento (domínio)
-        return new Assento(
+        // Usa o construtor completo de AssentoBase
+        return new AssentoBase(
                 uuidToAssentoId(jpaEntity.getId()),
-                sessaoDominioPai, // Injeta a referência da Sessao de domínio pai
+                sessaoDominioPai,
                 jpaEntity.getIdentificadorPosicao(),
                 jpaEntity.getTipo(),
                 jpaEntity.getStatus(),
@@ -96,7 +97,7 @@ public class AssentoMapper {
     // Este método de lista para toDomainEntity precisaria da Sessao pai para cada Assento.
     // Geralmente, a lista de Assentos de domínio é construída iterativamente no SessaoRepositorioJpa,
     // onde a Sessao pai já está disponível.
-    public static List<Assento> toDomainEntityList(List<AssentoJpa> jpaEntityList, Sessao sessaoDominioPai) {
+    public static List<AssentoBase> toDomainEntityList(List<AssentoJpa> jpaEntityList, Sessao sessaoDominioPai) {
         if (jpaEntityList == null) {
             return Collections.emptyList();
         }

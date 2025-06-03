@@ -10,6 +10,7 @@ import com.cinetech.api.dominio.enums.StatusAssento;
 import com.cinetech.api.dominio.enums.StatusSessao;
 import com.cinetech.api.dominio.modelos.filme.Filme;
 import com.cinetech.api.dominio.modelos.sala.Sala;
+import com.cinetech.api.dominio.modelos.assento.AssentoBase;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,17 +29,17 @@ public class Sessao {
     private TipoExibicao tipoExibicao; // "2D/3D" [cite: 4]
     private BigDecimal precoIngressoBase;
     private StatusSessao status;
-    private final List<Assento> assentos;
+    private final List<AssentoBase> assentos;
 
     // Construtor para nova sessão
     public Sessao(Filme filme, Sala sala, LocalDateTime dataHoraInicio, TipoExibicao tipoExibicao, BigDecimal precoIngressoBase) {
         this(SessaoId.novo(), filme, sala, dataHoraInicio, tipoExibicao, precoIngressoBase, StatusSessao.PROGRAMADA, new ArrayList<>());
-        gerarAssentosComBaseNaSala(); // Popula os assentos
+        criarAssentos(); // Popula os assentos
     }
 
     // Construtor completo para reconstituição
     public Sessao(SessaoId id, Filme filme, Sala sala, LocalDateTime dataHoraInicio, TipoExibicao tipoExibicao,
-                  BigDecimal precoIngressoBase, StatusSessao status, List<Assento> assentosExistentes) {
+                  BigDecimal precoIngressoBase, StatusSessao status, List<AssentoBase> assentosExistentes) {
         this.id = Objects.requireNonNull(id, "ID da Sessão não pode ser nulo.");
         setFilme(filme);
         setSala(sala);
@@ -72,7 +73,7 @@ public class Sessao {
     public TipoExibicao getTipoExibicao() { return tipoExibicao; }
     public BigDecimal getPrecoIngressoBase() { return precoIngressoBase; }
     public StatusSessao getStatus() { return status; }
-    public List<Assento> getAssentos() { return Collections.unmodifiableList(assentos); }
+    public List<AssentoBase> getAssentos() { return Collections.unmodifiableList(assentos); }
 
     // Setters (controlados)
     public void setFilme(Filme filme) {
@@ -111,23 +112,11 @@ public class Sessao {
 
     // Métodos de Negócio
 
-    private void gerarAssentosComBaseNaSala() {
-        this.assentos.clear(); // Limpa assentos existentes se houver (cuidado se já houve vendas)
-        if (this.sala == null) {
-            throw new IllegalStateException("Sala não definida para gerar assentos.");
+    private void criarAssentos() {
+        for (int i = 0; i < sala.getCapacidadeTotal(); i++) {
+            String identificadorPosicao = String.format("%c%d", 'A' + (i / 10), (i % 10) + 1);
+            assentos.add(new AssentoBase(this, identificadorPosicao, TipoAssento.COMUM));
         }
-        // Lógica simplificada de geração de assentos. Uma sala real teria um layout.
-        // Ex: 10 fileiras (A-J) de 10 cadeiras (1-10) = 100 assentos
-        // A informação de quais são COMUM, VIP, PCD viria do layout da Sala [cite: 4, 13]
-        // Aqui, vamos criar todos como COMUM por simplicidade.
-        int capacidade = this.sala.getCapacidadeTotal();
-        for (int i = 0; i < capacidade; i++) {
-            // Lógica para gerar identificador (ex: "A1", "A2", ...)
-            String identificador = "Assento-" + (i + 1);
-            // Tipo de assento viria do layout da sala.
-            this.assentos.add(new Assento(this, identificador, TipoAssento.COMUM));
-        }
-        System.out.println("INFO DOMINIO: " + this.assentos.size() + " assentos gerados para sessão " + this.id + " na sala " + this.sala.getNome());
     }
 
     /**
@@ -136,7 +125,7 @@ public class Sessao {
      * Garante que o assento pertença a esta sessão.
      * @param assento O assento de domínio a ser adicionado.
      */
-    public void adicionarAssento(Assento assento) {
+    public void adicionarAssento(AssentoBase assento) {
         Objects.requireNonNull(assento, "Assento a ser adicionado não pode ser nulo.");
         if (assento.getSessao() == null || !assento.getSessao().getId().equals(this.id)) {
             throw new IllegalArgumentException("Tentativa de adicionar assento (ID: " + assento.getId() +
@@ -156,7 +145,7 @@ public class Sessao {
         }
     }
 
-    public Optional<Assento> buscarAssentoPorIdentificador(String identificadorAssento) {
+    public Optional<AssentoBase> buscarAssentoPorIdentificador(String identificadorAssento) {
         if (identificadorAssento == null || identificadorAssento.trim().isEmpty()) {
             throw new IllegalArgumentException("Identificador do assento não pode ser vazio.");
         }
@@ -165,12 +154,12 @@ public class Sessao {
                 .findFirst();
     }
 
-    public Assento reservarAssentoTemporariamente(String identificadorAssento, ClienteId clienteId, int minutosParaExpirar) { // F1
+    public AssentoBase reservarAssentoTemporariamente(String identificadorAssento, ClienteId clienteId, int minutosParaExpirar) { // F1
         // Correção aqui:
         if (!permiteNovasComprasOuReservas()) {
             throw new IllegalStateException("Sessão ID " + this.id + " não está aberta para novas reservas (status: " + this.status + ").");
         }
-        Assento assento = buscarAssentoPorIdentificador(identificadorAssento)
+        AssentoBase assento = buscarAssentoPorIdentificador(identificadorAssento)
                 .orElseThrow(() -> new IllegalArgumentException("Assento '" + identificadorAssento + "' não encontrado nesta sessão."));
 
         assento.reservarTemporariamente(clienteId, minutosParaExpirar);
@@ -179,11 +168,11 @@ public class Sessao {
         return assento;
     }
 
-    public Assento confirmarOcupacaoAssento(String identificadorAssento, ClienteId clienteIdQueReservou) { // F1
+    public AssentoBase confirmarOcupacaoAssento(String identificadorAssento, ClienteId clienteIdQueReservou) { // F1
         if (this.status == StatusSessao.CANCELADA || this.status == StatusSessao.FINALIZADA || this.status == StatusSessao.LOTADA) {
             throw new IllegalStateException("Não é possível confirmar assento em sessão com status: " + this.status);
         }
-        Assento assento = buscarAssentoPorIdentificador(identificadorAssento)
+        AssentoBase assento = buscarAssentoPorIdentificador(identificadorAssento)
                 .orElseThrow(() -> new IllegalArgumentException("Assento '" + identificadorAssento + "' não encontrado nesta sessão."));
 
         // Validação se o assento estava reservado para este cliente (opcional, mas boa prática)
@@ -198,7 +187,7 @@ public class Sessao {
     }
 
     public void liberarAssentoPorCancelamentoOuExpiracao(String identificadorAssento) { // F1
-        Assento assento = buscarAssentoPorIdentificador(identificadorAssento)
+        AssentoBase assento = buscarAssentoPorIdentificador(identificadorAssento)
                 .orElseThrow(() -> new IllegalArgumentException("Assento '" + identificadorAssento + "' não encontrado nesta sessão."));
         assento.liberar();
         // Se a sessão estava lotada, seu status pode mudar.
@@ -210,7 +199,7 @@ public class Sessao {
 
     public void processarExpiracaoDeTodasAsReservasTemporarias(LocalDateTime agora) { // F1
         boolean algumaReservaExpirou = false;
-        for (Assento assento : this.assentos) {
+        for (AssentoBase assento : this.assentos) {
             if (assento.liberarSeReservaTemporariaExpirada(agora)) {
                 algumaReservaExpirou = true;
             }
@@ -230,18 +219,17 @@ public class Sessao {
         if (!podeTerStatusLotacaoAlterado()) return;
 
         boolean todosVendaveisOcupados = this.assentos.stream()
-                .filter(a -> a.getTipo() != TipoAssento.PCD || a.getStatus() != StatusAssento.BLOQUEADO) // Exemplo simples de filtro para assentos "vendáveis"
+                .filter(a -> a.getStatus() != StatusAssento.BLOQUEADO) // Filtra apenas assentos não bloqueados
                 .allMatch(a -> a.getStatus() == StatusAssento.OCUPADO_FINAL);
 
         if (todosVendaveisOcupados) {
             if (this.status != StatusSessao.LOTADA) {
                 this.status = StatusSessao.LOTADA;
                 System.out.println("INFO DOMINIO: Sessão " + this.id + " marcada como LOTADA.");
-                // Gerar evento de domínio: SessaoLotadaEvent(this.id)
             }
         } else {
-            if (this.status == StatusSessao.LOTADA) { // Se estava lotada e agora não está mais
-                this.status = StatusSessao.ABERTA; // Assume que se não está lotada, está aberta (se já não passou)
+            if (this.status == StatusSessao.LOTADA) {
+                this.status = StatusSessao.ABERTA;
                 System.out.println("INFO DOMINIO: Sessão " + this.id + " não está mais LOTADA. Status: ABERTA.");
             }
         }

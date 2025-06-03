@@ -104,11 +104,12 @@ src/main/java/com/cinetech/api/
      - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/DescontoPromocao.java`
      - `src/main/java/com/cinetech/api/dominio/modelos/pagamento/DescontoFidelidade.java`
 
-4. **Template Method Pattern**
-   - **Objetivo**: Definir o esqueleto de um algoritmo em uma operação, adiando alguns passos para subclasses
+4. **Decorator Pattern**
+   - **Objetivo**: Adicionar responsabilidades a objetos individuais dinamicamente, sem afetar outros objetos da mesma classe
    - **Arquivos**:
-     - `src/main/java/com/cinetech/api/dominio/modelos/sessao/Sessao.java`
      - `src/main/java/com/cinetech/api/dominio/modelos/assento/Assento.java`
+     - `src/main/java/com/cinetech/api/dominio/modelos/assento/AssentoDecorator.java`
+     - `src/main/java/com/cinetech/api/dominio/modelos/assento/AssentoVIPDecorator.java`
 
 ---
 
