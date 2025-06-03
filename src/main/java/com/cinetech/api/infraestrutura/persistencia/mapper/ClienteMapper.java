@@ -90,7 +90,7 @@ public class ClienteMapper {
         List<CreditoCompensacao> creditosDominio = Collections.emptyList();
         if (jpaEntity.getCreditosCompensacaoJpa() != null) {
             creditosDominio = jpaEntity.getCreditosCompensacaoJpa().stream()
-                    .map(creditoJpa -> CreditoCompensacaoMapper.toDomainEntity(creditoJpa)) // Passa ClienteJpaPai se CreditoCompensacaoMapper precisar
+                    .map(creditoJpa -> CreditoCompensacaoMapper.toDomainEntity(creditoJpa))
                     .filter(java.util.Objects::nonNull)
                     .collect(Collectors.toList());
         }
@@ -98,29 +98,28 @@ public class ClienteMapper {
         List<PontoFidelidade> pontosDominio = Collections.emptyList();
         if (jpaEntity.getPontosFidelidadeJpa() != null) {
             pontosDominio = jpaEntity.getPontosFidelidadeJpa().stream()
-                    .map(pontoJpa -> PontoFidelidadeMapper.toDomainEntity(pontoJpa)) // Passa ClienteJpaPai se PontoFidelidadeMapper precisar
+                    .map(pontoJpa -> PontoFidelidadeMapper.toDomainEntity(pontoJpa))
                     .filter(java.util.Objects::nonNull)
                     .collect(Collectors.toList());
         }
 
+        // Garante que a senha não seja nula ou vazia
+        String senha = jpaEntity.getSenha();
+        if (senha == null || senha.trim().isEmpty()) {
+            senha = "senha123"; // Senha padrão
+        }
+
         Cliente clienteDominio = new Cliente(
-                // Usa o método de conversão local
                 uuidToClienteId(jpaEntity.getId()),
                 jpaEntity.getNome(),
                 jpaEntity.getEmail(),
                 jpaEntity.getCpf(),
                 jpaEntity.getPerfil(),
                 jpaEntity.getDataNascimento(),
-                jpaEntity.getSenha(),
+                senha,
                 creditosDominio,
                 pontosDominio
         );
-
-        // Se CreditoCompensacao e PontoFidelidade de domínio precisarem da referência ao Cliente pai
-        // no construtor, o mapeamento das listas acima precisaria passar 'clienteDominio' para
-        // os métodos toDomainEntity dos mappers filhos, ou os filhos seriam construídos
-        // e adicionados ao clienteDominio após a sua criação.
-        // No nosso modelo atual, CreditoCompensacao e PontoFidelidade já recebem ClienteId no construtor.
 
         return clienteDominio;
     }
