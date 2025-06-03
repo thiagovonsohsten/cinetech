@@ -5,6 +5,7 @@ import com.cinetech.api.dominio.modelos.cliente.Cliente;
 import com.cinetech.api.infraestrutura.web.dto.LoginDTO;
 import com.cinetech.api.infraestrutura.web.dto.LoginResponseDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,11 @@ public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final ClienteAplicacao clienteAplicacao;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(ClienteAplicacao clienteAplicacao) {
+    public AuthController(ClienteAplicacao clienteAplicacao, PasswordEncoder passwordEncoder) {
         this.clienteAplicacao = clienteAplicacao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
@@ -53,7 +56,7 @@ public class AuthController {
             Cliente cliente = clienteOpt.get();
             logger.info("Cliente encontrado: id={}, nome={}", cliente.getId(), cliente.getNome());
 
-            if (!cliente.getSenha().equals(loginDTO.getSenha())) {
+            if (!passwordEncoder.matches(loginDTO.getSenha(), cliente.getSenha())) {
                 logger.warn("Tentativa de login com senha incorreta para o email: {}", loginDTO.getEmail());
                 return ResponseEntity.badRequest().body("Email ou senha inválidos");
             }

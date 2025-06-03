@@ -12,6 +12,7 @@ import com.cinetech.api.dominio.repositorios.ClienteRepositorio;
 import com.cinetech.api.dominio.repositorios.IngressoRepositorio;
 import com.cinetech.api.dominio.repositorios.SessaoRepositorio;
 import com.cinetech.api.dominio.servicos.GestaoPontosFidelidadeServico.GestaoPontosFidelidadeServico;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,15 +30,18 @@ public class ClienteAplicacao {
     private final IngressoRepositorio ingressoRepositorio;
     private final SessaoRepositorio sessaoRepositorio;
     private final GestaoPontosFidelidadeServico gestaoPontosFidelidadeService;
+    private final PasswordEncoder passwordEncoder;
 
     public ClienteAplicacao(ClienteRepositorio clienteRepositorio,
                             IngressoRepositorio ingressoRepositorio,
                             SessaoRepositorio sessaoRepositorio,
-                            GestaoPontosFidelidadeServico gestaoPontosFidelidadeService) {
+                            GestaoPontosFidelidadeServico gestaoPontosFidelidadeService,
+                            PasswordEncoder passwordEncoder) {
         this.clienteRepositorio = clienteRepositorio;
         this.ingressoRepositorio = ingressoRepositorio;
         this.sessaoRepositorio = sessaoRepositorio;
         this.gestaoPontosFidelidadeService = gestaoPontosFidelidadeService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -48,7 +52,8 @@ public class ClienteAplicacao {
         if (clienteRepositorio.buscarPorEmail(email).isPresent()) {
             throw new IllegalArgumentException("Email " + email + " já cadastrado.");
         }
-        Cliente novoCliente = new Cliente(nome, email, cpf, perfil, dataNascimento, senha);
+        String senhaCriptografada = passwordEncoder.encode(senha);
+        Cliente novoCliente = new Cliente(nome, email, cpf, perfil, dataNascimento, senhaCriptografada);
         return clienteRepositorio.salvar(novoCliente);
     }
 

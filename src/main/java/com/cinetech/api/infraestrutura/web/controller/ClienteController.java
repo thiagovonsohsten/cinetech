@@ -52,13 +52,16 @@ public class ClienteController {
                 return ResponseEntity.badRequest().body("Perfil do cliente é obrigatório");
             }
 
-            // Define valores padrão para campos obrigatórios não fornecidos
             if (clienteDTO.getDataNascimento() == null) {
-                clienteDTO.setDataNascimento(LocalDate.now());
+                return ResponseEntity.badRequest().body("Data de nascimento é obrigatória");
             }
 
             if (clienteDTO.getSenha() == null || clienteDTO.getSenha().trim().isEmpty()) {
-                clienteDTO.setSenha("senha123");
+                return ResponseEntity.badRequest().body("Senha é obrigatória");
+            }
+
+            if (clienteDTO.getSenha().length() < 6) {
+                return ResponseEntity.badRequest().body("Senha deve ter no mínimo 6 caracteres");
             }
 
             Cliente cliente = clienteAplicacao.cadastrarNovoCliente(
