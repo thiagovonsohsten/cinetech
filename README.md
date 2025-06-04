@@ -169,14 +169,22 @@ src/main/java/com/cinetech/api/
    npm install
    ```
 
-3. Inicie o servidor:
+3. Inicie o servidor de desenvolvimento:
    ```bash
-   npm start
+   npm run dev
    ```
 
 4. O frontend estará disponível em:
-   - Interface Web: `http://localhost:3000`
-   - Página Inicial: `http://localhost:3000/home`
+   - Interface Web: `http://localhost:5173`
+   - Página Inicial: `http://localhost:5173/home`
+
+### Comandos Disponíveis no Frontend
+
+- `npm run dev` - Inicia o servidor de desenvolvimento
+- `npm run build` - Cria a versão de produção
+- `npm run build:dev` - Cria a versão de desenvolvimento
+- `npm run preview` - Visualiza a versão de produção localmente
+- `npm run lint` - Executa o linter para verificar problemas de código
 
 ### Verificando se está tudo funcionando
 
@@ -185,7 +193,7 @@ src/main/java/com/cinetech/api/
    - Acesse `http://localhost:8080/swagger-ui.html` para ver a documentação da API
 
 2. Frontend:
-   - Acesse `http://localhost:3000` para ver a página inicial
+   - Acesse `http://localhost:5173` para ver a página inicial
    - Faça login com as credenciais padrão:
      - Usuário: `admin@cinetech.com`
      - Senha: `admin123`

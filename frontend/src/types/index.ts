@@ -1,62 +1,84 @@
-export interface Filme {
+
+export interface Movie {
   id: string;
-  titulo: string;
-  genero: string;
-  duracaoMinutos: number;
-  idioma: string;
-  classificacaoEtaria: string;
-  dataInicioExibicao: string;
-  dataFimExibicao: string;
-  sinopse: string;
-  notaMediaAvaliacao: number;
-  removidoDaProgramacao: boolean;
+  title: string;
+  genre: string[];
+  ageRating: string;
+  language: string;
+  duration: number;
+  rating: number;
+  synopsis: string;
+  posterUrl: string;
+  trailerUrl?: string;
+  cast: string[];
+  director: string;
+  releaseDate: string;
+  featured?: boolean;
 }
 
-export interface Sessao {
+export interface Session {
   id: string;
-  filmeId: string;
-  salaId: string;
-  dataHora: string;
-  preco: number;
-  assentosDisponiveis: number;
-  totalAssentos: number;
+  movieId: string;
+  roomId: string;
+  datetime: string;
+  price: number;
+  availableSeats: number;
+  totalSeats: number;
+  format: '2D' | '3D';
 }
 
-export interface Ingresso {
+export interface Room {
   id: string;
-  sessaoId: string;
-  clienteId: string;
-  assento: string;
-  valor: number;
-  status: 'RESERVADO' | 'CONFIRMADO' | 'CANCELADO';
-  dataCompra: string;
+  name: string;
+  type: '2D' | '3D';
+  seats: Seat[][];
+  capacity: number;
 }
 
-export interface Cliente {
+export interface Seat {
   id: string;
-  nome: string;
+  row: string;
+  number: number;
+  type: 'common' | 'vip' | 'pcd';
+  isOccupied: boolean;
+  isSelected?: boolean;
+}
+
+export interface User {
+  id: string;
+  name: string;
   email: string;
-  cpf: string;
-  dataNascimento: string;
-  creditos: number;
+  loyaltyPoints: number;
+  preferences: {
+    genres: string[];
+    languages: string[];
+  };
 }
 
-export interface Avaliacao {
+export interface Review {
   id: string;
-  filmeId: string;
-  clienteId: string;
-  nota: number;
-  comentario: string;
-  dataAvaliacao: string;
-  statusVisibilidade: 'PENDENTE_MODERACAO' | 'APROVADA' | 'REPROVADA_OFENSIVA';
+  movieId: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  date: string;
+  verified: boolean;
 }
 
-export interface Promocao {
+export interface CartItem {
+  sessionId: string;
+  movie: Movie;
+  session: Session;
+  seats: Seat[];
+  subtotal: number;
+}
+
+export interface Promotion {
   id: string;
-  codigo: string;
-  desconto: number;
-  dataInicio: string;
-  dataFim: string;
-  tipo: 'PORCENTAGEM' | 'VALOR_FIXO';
-  valorMinimo: number;
-} 
+  title: string;
+  description: string;
+  discountPercentage: number;
+  validUntil: string;
+  imageUrl: string;
+}
